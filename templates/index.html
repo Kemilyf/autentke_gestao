@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autentke - Gestão 2026</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        body { background-color: #f4f7f6; font-family: 'Segoe UI', sans-serif; }
+        .crm-card { background: #ffffff; border: none; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .btn-action { border-radius: 8px; transition: 0.2s; }
+        .search-box { padding-left: 45px; border-radius: 12px; border: 2px solid #eee; position: relative; }
+        .search-container i { position: absolute; left: 15px; top: 12px; color: #adb5bd; z-index: 10; }
+        .modal-content { border-radius: 20px; border: none; }
+    </style>
+</head>
+<body class="container-fluid py-4">
+
+<div class="row g-4">
+    <div class="col-12 col-lg-3">
+        <div class="crm-card p-4 mb-4 text-center">
+            <h6 class="fw-bold text-muted mb-3">TICKET MÉDIO</h6>
+            <h3 class="fw-bold text-primary mb-4">R$ {{ ticket|round(2) }}</h3>
+            <h6 class="fw-bold text-muted mb-3">🏆 TOP COMPRADORAS</h6>
+            {% for nome, qtd in ranking %}
+            <div class="d-flex justify-content-between small mb-2 p-2 bg-light rounded">
+                <span>{{ nome }}</span>
+                <span class="badge bg-primary rounded-pill">{{ qtd }}</span>
+            </div>
+            {% endfor %}
+            <a href="/relatorio" class="btn btn-outline-dark w-100 mt-4 fw-bold">RELATÓRIO HISTÓRICO</a>
+        </div>
+        
+        <div class="crm-card p-4">
+            <h6 class="fw-bold mb-3">CADASTRAR LOTE</h6>
+            <form action="/add" method="POST">
+                <input type="text" name="nome" class="form-control mb-2" placeholder="Nome da Joia" required>
+                <div class="row g-2">
+                    <div class="col-6"><input type="number" step="0.01" name="custo" class="form-control mb-2" placeholder="Custo Un." required></div>
+                    <div class="col-6"><input type="number" name="qntd" class="form-control mb-2" value="1" required></div>
+                </div>
+                <input type="number" step="0.01" name="extras" class="form-control mb-3" placeholder="Frete/Mimos Totais">
+                <button type="submit" class="btn btn-dark w-100 fw-bold">ADICIONAR</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-9">
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-md-4">
+                <div class="card crm-card p-3 border-start border-success border-5">
+                    <small class="text-muted fw-bold">FATURAMENTO</small>
+                    <h4 class="mb-0 fw-bold">R$ {{ fat|round(2) }}</h4>
+                </div>
+            </div>
+            <div class="col-6 col-md-4">
+                <div class="card crm-card p-3 border-start border-primary border-5">
+                    <small class="text-muted fw-bold">LUCRO REAL</small>
+                    <h4 class="mb-0 fw-bold">R$ {{ lucro|round(2) }}</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-container mb-4 position-relative">
+            <i class="bi bi-search"></i>
+            <input type="text" id="searchInput" class="form-control search-box py-2" placeholder="Buscar joia ou cliente...">
+        </div>
+
+        <div class="crm-card">
+            <div class="d-flex justify-content-between p-3 border-bottom">
+                <h6 class="mb-0 fw-bold">Estoque Ativo</h6>
+                <form action="/arquivar" method="POST"><button class="btn btn-sm btn-outline-secondary">Limpar Tela</button></form>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" id="tabelaVendas">
+                    <thead>
+                        <tr class="small text-muted">
+                            <th class="ps-4">PRODUTO</th>
+                            <th>VALOR</th>
+                            <th>STATUS</th>
+                            <th class="text-center">AÇÕES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in produtos %}
+                        <tr>
+                            <td class="ps-4">
+                                <div class="fw-bold">{{ p.nome }}</div>
+                                <small class="text-muted">
+                                    {{ p.cliente_nome if p.vendido == 'SIM' else 'Custo: R$ ' ~ (p.custo_base + p.custo_extra)|round(2) }}
+                                </small>
+                            </td>
+                            <td>
+                                <strong>R$ {{ p.preco_venda }}</strong><br>
+                                <small class="text-danger" style="font-size: 0.7rem;">Promo: R$ {{ p.preco_promo }}</small>
+                            </td>
+                            <td><span class="badge {{ 'bg-success' if p.vendido == 'SIM' else 'bg-warning text-dark' }}">{{ p.vendido }}</span></td>
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    {% if p.vendido == 'NÃO' %}
+                                    <button class="btn btn-sm btn-success btn-action" data-bs-toggle="modal" data-bs-target="#vModal{{ p.id }}">Vender</button>
+                                    <button class="btn btn-sm btn-outline-primary btn-action mx-1" data-bs-toggle="modal" data-bs-target="#eModal{{ p.id }}"><i class="bi bi-pencil"></i></button>
+                                    {% endif %}
+                                    <form action="/delete/{{ p.id }}" method="POST" onsubmit="return confirm('Excluir permanentemente?')">
+                                        <button class="btn btn-sm btn-outline-danger border-0"><i class="bi bi-trash"></i></button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <div class="modal fade" id="vModal{{ p.id }}" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-sm">
+                                <div class="modal-content shadow">
+                                    <form action="{{ url_for('vender', id=p.id) }}" method="POST">
+                                        <div class="modal-body p-4">
+                                            <h6 class="fw-bold mb-3 text-center">Venda: {{ p.nome }}</h6>
+                                            <input type="text" name="cliente_nome" class="form-control mb-2" placeholder="Nome da Cliente" required>
+                                            <input type="text" name="cliente_id" class="form-control mb-2" placeholder="ID da Cliente (Opcional)">
+                                            <select name="forma_pagamento" class="form-select mb-3">
+                                                <option value="Pix">Pix</option>
+                                                <option value="Cartão">Cartão</option>
+                                                <option value="Dinheiro">Dinheiro</option>
+                                            </select>
+                                            <div class="form-check form-switch mb-3">
+                                                <input class="form-check-input" type="checkbox" name="usar_promo" value="sim" id="promo{{ p.id }}">
+                                                <label class="form-check-label small" for="promo{{ p.id }}">Aplicar Promoção (-10%)</label>
+                                            </div>
+                                            <button type="submit" class="btn btn-success w-100 fw-bold">FINALIZAR</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="eModal{{ p.id }}" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content shadow">
+                                    <form action="{{ url_for('edit', id=p.id) }}" method="POST">
+                                        <div class="modal-body p-4">
+                                            <h6 class="fw-bold mb-3">Modificar Item</h6>
+                                            <label class="small fw-bold text-muted">Nome da Joia</label>
+                                            <input type="text" name="nome" class="form-control mb-2" value="{{ p.nome }}">
+                                            <label class="small fw-bold text-muted">Custo Base</label>
+                                            <input type="number" step="0.01" name="custo" class="form-control mb-2" value="{{ p.custo_base }}">
+                                            <label class="small fw-bold text-muted">Markup Atual</label>
+                                            <input type="number" step="0.1" name="markup" class="form-control mb-2" value="{{ p.markup }}">
+                                            <label class="small fw-bold text-muted">Valor de Venda Direto</label>
+                                            <input type="number" step="0.01" name="valor_venda" class="form-control mb-3" value="{{ p.preco_venda }}">
+                                            <button type="submit" class="btn btn-primary w-100 fw-bold">SALVAR</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Filtro de Busca em Tempo Real
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        let filter = this.value.toLowerCase();
+        let rows = document.querySelectorAll('#tabelaVendas tbody tr');
+        rows.forEach(row => {
+            row.style.display = row.innerText.toLowerCase().includes(filter) ? '' : 'none';
+        });
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

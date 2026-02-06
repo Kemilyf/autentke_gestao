@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Histórico - Autentke</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
+        .report-card { border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .header-gradient { background: linear-gradient(135deg, #212529 0%, #434343 100%); color: white; border-radius: 20px 20px 0 0; }
+        .table thead th { border: none; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; color: #6c757d; }
+        .badge-promo { background-color: #fff0f0; color: #dc3545; border: 1px solid #ffc9c9; }
+        .badge-normal { background-color: #f0fdf4; color: #198754; border: 1px solid #bbf7d0; }
+        .back-btn { border-radius: 12px; transition: 0.3s; }
+        .back-btn:hover { background-color: #000; color: #fff; }
+    </style>
+</head>
+<body class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-0">📊 Histórico de Vendas</h2>
+            <p class="text-muted">Consolidado de joias vendidas e arquivadas</p>
+        </div>
+        <a href="/" class="btn btn-outline-dark back-btn fw-bold px-4 shadow-sm">
+            <i class="bi bi-house-door me-2"></i>PAINEL INICIAL
+        </a>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card report-card p-4 text-center">
+                <small class="text-uppercase fw-bold text-muted mb-2">Lucro Real Acumulado</small>
+                <h2 class="fw-bold text-success mb-0">R$ {{ fat_total_lucro|round(2) }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card report-card overflow-hidden">
+        <div class="header-gradient p-4">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h5 class="mb-0">Detalhamento de Transações</h5>
+                </div>
+                <div class="col-auto">
+                    <button onclick="window.print()" class="btn btn-sm btn-light fw-bold rounded-pill px-3">
+                        <i class="bi bi-printer me-2"></i>IMPRIMIR PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4">Data da Venda</th>
+                        <th>Cliente / ID</th>
+                        <th>Joia</th>
+                        <th>Pagamento</th>
+                        <th>Tipo</th>
+                        <th class="pe-4 text-end">Lucro Líquido</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for v in vendas %}
+                    <tr>
+                        <td class="ps-4 small text-muted">{{ v.data_venda }}</td>
+                        <td>
+                            <div class="fw-bold">{{ v.cliente_nome }}</div>
+                            <small class="text-muted">ID: {{ v.cliente_id if v.cliente_id else 'Não Informado' }}</small>
+                        </td>
+                        <td>{{ v.nome }}</td>
+                        <td>
+                            <span class="badge bg-light text-dark border px-3 rounded-pill">{{ v.forma_pagamento }}</span>
+                        </td>
+                        <td>
+                            <span class="badge rounded-pill px-3 {{ 'badge-promo' if v.tipo_venda == 'PROMOÇÃO' else 'badge-normal' }}">
+                                {{ v.tipo_venda }}
+                            </span>
+                        </td>
+                        <td class="pe-4 text-end fw-bold text-dark">
+                            R$ {{ (v.preco_venda - (v.custo_base + v.custo_extra))|round(2) }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% if not vendas %}
+                    <tr>
+                        <td colspan="6" class="text-center py-5 text-muted italic">Nenhuma venda arquivada para exibir.</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer class="mt-5 text-center text-muted small">
+        <p>© 2026 Autentke - Sistema de Gestão Interna • Porto Velho/RO</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
