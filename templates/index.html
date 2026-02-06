@@ -3,176 +3,282 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Autentke - Gestão 2026</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <title>Autentke | Online BI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
     <style>
-        body { background-color: #f4f7f6; font-family: 'Segoe UI', sans-serif; }
-        .crm-card { background: #ffffff; border: none; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .btn-action { border-radius: 8px; transition: 0.2s; }
-        .search-box { padding-left: 45px; border-radius: 12px; border: 2px solid #eee; position: relative; }
-        .search-container i { position: absolute; left: 15px; top: 12px; color: #adb5bd; z-index: 10; }
-        .modal-content { border-radius: 20px; border: none; }
+        :root { --sidebar-bg: #ffffff; --main-bg: #f4f7f6; --accent: #2c3e50; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--main-bg); color: #333; }
+        .sidebar { min-height: 100vh; background: var(--sidebar-bg); border-right: 1px solid #e0e0e0; padding: 1.5rem; position: fixed; width: 240px; z-index: 100; }
+        .main-content { margin-left: 240px; padding: 2rem; }
+        .card-custom { border: none; border-radius: 12px; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+        .metric-card { padding: 1.2rem; border-left: 5px solid var(--accent); }
+        .metric-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #7f8c8d; font-weight: 600; }
+        .metric-value { font-size: 1.5rem; font-weight: 700; }
+        .table-container { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+        .joia-img { width: 45px; height: 45px; object-fit: cover; border-radius: 8px; border: 1px solid #eee; }
+        .badge-origem { font-size: 0.7rem; padding: 4px 8px; border-radius: 20px; }
+        .bg-insta { background: #E1306C; color: white; }
+        .bg-whats { background: #25D366; color: white; }
+        .bg-ads { background: #4285F4; color: white; }
+        @media (max-width: 768px) { .sidebar { width: 100%; position: relative; min-height: auto; } .main-content { margin-left: 0; } }
     </style>
 </head>
-<body class="container-fluid py-4">
+<body>
 
-<div class="row g-4">
-    <div class="col-12 col-lg-3">
-        <div class="crm-card p-4 mb-4 text-center">
-            <h6 class="fw-bold text-muted mb-3">TICKET MÉDIO</h6>
-            <h3 class="fw-bold text-primary mb-4">R$ {{ ticket|round(2) }}</h3>
-            <h6 class="fw-bold text-muted mb-3">🏆 TOP COMPRADORAS</h6>
-            {% for nome, qtd in ranking %}
-            <div class="d-flex justify-content-between small mb-2 p-2 bg-light rounded">
-                <span>{{ nome }}</span>
-                <span class="badge bg-primary rounded-pill">{{ qtd }}</span>
-            </div>
-            {% endfor %}
-            <a href="/relatorio" class="btn btn-outline-dark w-100 mt-4 fw-bold">RELATÓRIO HISTÓRICO</a>
+<div class="sidebar">
+    <div class="text-center mb-5"><h3 class="fw-bold">AUTENTKE</h3><span class="badge bg-dark">Online Store BI</span></div>
+    <div class="d-grid gap-2">
+        <button class="btn btn-dark w-100 btn-sm" data-bs-toggle="modal" data-bs-target="#modalColecao">Novo Lote</button>
+        <button class="btn btn-outline-dark w-100 btn-sm" data-bs-toggle="modal" data-bs-target="#modalProduto">Nova Joia</button>
+        <button class="btn btn-outline-danger w-100 btn-sm" data-bs-toggle="modal" data-bs-target="#modalDespesa">Nova Despesa</button>
+        <button class="btn btn-outline-primary w-100 btn-sm" data-bs-toggle="modal" data-bs-target="#modalLiquidar">Liquidar Lote</button>
+        <hr class="my-3">
+        <a href="/" class="nav-link p-2 active fw-bold text-dark small"><i class="bi bi-grid-1x2-fill me-2"></i>Dashboard</a>
+        <a href="/relatorio" target="_blank" class="nav-link p-2 text-muted small"><i class="bi bi-file-earmark-bar-graph me-2"></i>Relatórios</a>
+    </div>
+</div>
+
+<div class="main-content">
+    {% with messages = get_flashed_messages() %}{% if messages %}{% for message in messages %}
+    <div class="alert alert-info alert-dismissible fade show border-0 shadow-sm mb-4" role="alert" style="border-radius: 12px;">
+        <i class="bi bi-info-circle me-2"></i> {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}{% endif %}{% endwith %}
+
+    <!-- Header & Metas -->
+    <div class="row align-items-center mb-5">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-0">Visão Geral</h2>
+            <p class="text-muted small">Crescimento e Marketing da Autentke.</p>
         </div>
-        
-        <div class="crm-card p-4">
-            <h6 class="fw-bold mb-3">CADASTRAR LOTE</h6>
-            <form action="/add" method="POST">
-                <input type="text" name="nome" class="form-control mb-2" placeholder="Nome da Joia" required>
-                <div class="row g-2">
-                    <div class="col-6"><input type="number" step="0.01" name="custo" class="form-control mb-2" placeholder="Custo Un." required></div>
-                    <div class="col-6"><input type="number" name="qntd" class="form-control mb-2" value="1" required></div>
+        <div class="col-md-6">
+            <div class="card-custom p-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="small fw-bold text-uppercase">Meta de Vendas</span>
+                    <span class="small text-muted" onclick="abrirModalMeta()" style="cursor:pointer">R$ {{ "%.0f"|format(meta_valor) }} <i class="bi bi-pencil-square"></i></span>
                 </div>
-                <input type="number" step="0.01" name="extras" class="form-control mb-3" placeholder="Frete/Mimos Totais">
-                <button type="submit" class="btn btn-dark w-100 fw-bold">ADICIONAR</button>
-            </form>
+                <div class="progress mb-1" style="height: 8px;"><div class="progress-bar bg-success" style="width: {{ progresso_meta }}%"></div></div>
+                <div class="d-flex justify-content-between small text-muted">
+                    <span>{{ "%.1f"|format(progresso_meta) }}%</span>
+                    <span>Origens: <i class="bi bi-instagram text-danger"></i> {{ vendas_insta }} | <i class="bi bi-whatsapp text-success"></i> {{ vendas_whats }}</span>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="col-12 col-lg-9">
-        <div class="row g-3 mb-4">
-            <div class="col-6 col-md-4">
-                <div class="card crm-card p-3 border-start border-success border-5">
-                    <small class="text-muted fw-bold">FATURAMENTO</small>
-                    <h4 class="mb-0 fw-bold">R$ {{ fat|round(2) }}</h4>
-                </div>
-            </div>
-            <div class="col-6 col-md-4">
-                <div class="card crm-card p-3 border-start border-primary border-5">
-                    <small class="text-muted fw-bold">LUCRO REAL</small>
-                    <h4 class="mb-0 fw-bold">R$ {{ lucro|round(2) }}</h4>
-                </div>
-            </div>
-        </div>
+    <!-- Metrics Row -->
+    <!-- Metrics Row Principais -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4"><div class="card-custom metric-card border-primary"><div class="metric-label">Faturamento Total</div><div class="metric-value">R$ {{ "%.2f"|format(faturamento) }}</div></div></div>
+        <div class="col-md-4"><div class="card-custom metric-card border-info"><div class="metric-label">Ticket Médio</div><div class="metric-value">R$ {{ "%.2f"|format(ticket_medio) }}</div></div></div>
+        <div class="col-md-4"><div class="card-custom metric-card border-success"><div class="metric-label text-success">Lucro Líquido Final</div><div class="metric-value text-success">R$ {{ "%.2f"|format(lucro_final) }}</div></div></div>
+    </div>
 
-        <div class="search-container mb-4 position-relative">
-            <i class="bi bi-search"></i>
-            <input type="text" id="searchInput" class="form-control search-box py-2" placeholder="Buscar joia ou cliente...">
-        </div>
+    <!-- Metrics Row Secundárias -->
+    <div class="row g-3 mb-5">
+        <div class="col-md-6"><div class="card-custom metric-card border-warning" style="padding: 1rem;"><div class="metric-label">Lucro Bruto (Peças)</div><div class="fw-bold">R$ {{ "%.2f"|format(lucro_real) }}</div></div></div>
+        <div class="col-md-6"><div class="card-custom metric-card border-danger" style="padding: 1rem;"><div class="metric-label text-danger">Despesas Fixas Totais</div><div class="fw-bold text-danger">R$ {{ "%.2f"|format(total_despesas) }}</div></div></div>
+    </div>
 
-        <div class="crm-card">
-            <div class="d-flex justify-content-between p-3 border-bottom">
-                <h6 class="mb-0 fw-bold">Estoque Ativo</h6>
-                <form action="/arquivar" method="POST"><button class="btn btn-sm btn-outline-secondary">Limpar Tela</button></form>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0" id="tabelaVendas">
-                    <thead>
-                        <tr class="small text-muted">
-                            <th class="ps-4">PRODUTO</th>
-                            <th>VALOR</th>
-                            <th>STATUS</th>
-                            <th class="text-center">AÇÕES</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for p in produtos %}
-                        <tr>
-                            <td class="ps-4">
-                                <div class="fw-bold">{{ p.nome }}</div>
-                                <small class="text-muted">
-                                    {{ p.cliente_nome if p.vendido == 'SIM' else 'Custo: R$ ' ~ (p.custo_base + p.custo_extra)|round(2) }}
-                                </small>
-                            </td>
-                            <td>
-                                <strong>R$ {{ p.preco_venda }}</strong><br>
-                                <small class="text-danger" style="font-size: 0.7rem;">Promo: R$ {{ p.preco_promo }}</small>
-                            </td>
-                            <td><span class="badge {{ 'bg-success' if p.vendido == 'SIM' else 'bg-warning text-dark' }}">{{ p.vendido }}</span></td>
-                            <td class="text-center">
-                                <div class="btn-group">
-                                    {% if p.vendido == 'NÃO' %}
-                                    <button class="btn btn-sm btn-success btn-action" data-bs-toggle="modal" data-bs-target="#vModal{{ p.id }}">Vender</button>
-                                    <button class="btn btn-sm btn-outline-primary btn-action mx-1" data-bs-toggle="modal" data-bs-target="#eModal{{ p.id }}"><i class="bi bi-pencil"></i></button>
-                                    {% endif %}
-                                    <form action="/delete/{{ p.id }}" method="POST" onsubmit="return confirm('Excluir permanentemente?')">
-                                        <button class="btn btn-sm btn-outline-danger border-0"><i class="bi bi-trash"></i></button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <div class="modal fade" id="vModal{{ p.id }}" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered modal-sm">
-                                <div class="modal-content shadow">
-                                    <form action="{{ url_for('vender', id=p.id) }}" method="POST">
-                                        <div class="modal-body p-4">
-                                            <h6 class="fw-bold mb-3 text-center">Venda: {{ p.nome }}</h6>
-                                            <input type="text" name="cliente_nome" class="form-control mb-2" placeholder="Nome da Cliente" required>
-                                            <input type="text" name="cliente_id" class="form-control mb-2" placeholder="ID da Cliente (Opcional)">
-                                            <select name="forma_pagamento" class="form-select mb-3">
-                                                <option value="Pix">Pix</option>
-                                                <option value="Cartão">Cartão</option>
-                                                <option value="Dinheiro">Dinheiro</option>
-                                            </select>
-                                            <div class="form-check form-switch mb-3">
-                                                <input class="form-check-input" type="checkbox" name="usar_promo" value="sim" id="promo{{ p.id }}">
-                                                <label class="form-check-label small" for="promo{{ p.id }}">Aplicar Promoção (-10%)</label>
-                                            </div>
-                                            <button type="submit" class="btn btn-success w-100 fw-bold">FINALIZAR</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal fade" id="eModal{{ p.id }}" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content shadow">
-                                    <form action="{{ url_for('edit', id=p.id) }}" method="POST">
-                                        <div class="modal-body p-4">
-                                            <h6 class="fw-bold mb-3">Modificar Item</h6>
-                                            <label class="small fw-bold text-muted">Nome da Joia</label>
-                                            <input type="text" name="nome" class="form-control mb-2" value="{{ p.nome }}">
-                                            <label class="small fw-bold text-muted">Custo Base</label>
-                                            <input type="number" step="0.01" name="custo" class="form-control mb-2" value="{{ p.custo_base }}">
-                                            <label class="small fw-bold text-muted">Markup Atual</label>
-                                            <input type="number" step="0.1" name="markup" class="form-control mb-2" value="{{ p.markup }}">
-                                            <label class="small fw-bold text-muted">Valor de Venda Direto</label>
-                                            <input type="number" step="0.01" name="valor_venda" class="form-control mb-3" value="{{ p.preco_venda }}">
-                                            <button type="submit" class="btn btn-primary w-100 fw-bold">SALVAR</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+    <!-- Estoque -->
+    <div class="table-container mb-5">
+        <h6 class="fw-bold mb-4 text-uppercase"><i class="bi bi-gem me-2"></i>Estoque Ativo</h6>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead><tr class="small text-muted"><th>Foto</th><th>Item</th><th>Lote</th><th>Markup</th><th>Preço</th><th class="text-end">Ações</th></tr></thead>
+                <tbody>
+                    {% for p in estoque %}
+                    <tr>
+                        <td><img src="{{ p.foto_url if p.foto_url else 'https://via.placeholder.com/45' }}" class="joia-img shadow-sm"></td>
+                        <td class="fw-bold">{{ p.nome }}</td>
+                        <td class="small text-muted">{{ p.colecao.nome }}</td>
+                        <td><span class="badge bg-light text-dark">{{ "%.1f"|format(p.markup) }}x</span></td>
+                        <td>
+                            <div class="fw-bold text-primary">R$ {{ "%.2f"|format(p.preco_ideal) }}</div>
+                            <div class="text-muted" style="font-size: 0.7rem;">Custo: R$ {{ "%.2f"|format(p.custo_base + p.colecao.rateio_unidade) }}</div>
+                        </td>
+                        <td class="text-end">
+                            <button class="btn btn-success btn-sm px-3 rounded-pill" onclick="abrirModalVenda({{ p.id }}, '{{ p.nome }}', {{ p.preco_ideal }})">Vender</button>
+                            <button class="btn btn-light btn-sm mx-1 rounded-circle" onclick="abrirModalEdicao({{ p.id }}, '{{ p.nome }}', {{ p.markup }}, '{{ p.cliente_nome }}', '{{ p.forma_pagamento }}', {{ p.desconto_aplicado }}, '{{ p.foto_url }}', '{{ p.origem_venda }}', '{{ p.tag_campanha }}')"><i class="bi bi-pencil"></i></button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 
+<!-- MODAL VENDA (Marketing Edition) -->
+<div class="modal fade" id="modalVenda" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <form id="formVenda" method="POST" class="modal-content p-3">
+            <div class="modal-header border-0"><h5 class="modal-title fw-bold">Registrar Venda Online</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <div class="mb-4 text-center"><h4 id="vendaNomeJoia" class="fw-bold text-dark mb-1"></h4></div>
+                <div class="row g-3">
+                    <div class="col-12"><label class="form-label">Nome da Cliente</label><input type="text" name="cliente_nome" class="form-control" required></div>
+                    <div class="col-md-6">
+                        <label class="form-label">Origem da Venda</label>
+                        <select name="origem_venda" class="form-select">
+                            <option value="Instagram">Instagram</option>
+                            <option value="WhatsApp">WhatsApp</option>
+                            <option value="Tráfego Pago">Tráfego Pago</option>
+                            <option value="Indicação">Indicação</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6"><label class="form-label">Tag Campanha</label><input type="text" name="tag_campanha" class="form-control" placeholder="#PROMO_VERAO"></div>
+                    <div class="col-md-6"><label class="form-label">Pagamento</label><select name="forma_pagamento" class="form-select"><option>Pix</option><option>Cartão</option><option>Dinheiro</option></select></div>
+                    <div class="col-md-6"><label class="form-label">Desconto (%)</label><input type="number" id="vendaDesconto" name="desconto_manual" class="form-control" value="0" oninput="calcularTotalVenda()"></div>
+                </div>
+                <div class="bg-light p-4 rounded-4 mt-4 text-center border">
+                    <div class="text-muted small fw-bold mb-1">VALOR FINAL</div>
+                    <div class="h2 fw-bold text-success mb-0" id="vendaValorFinal">R$ 0,00</div>
+                </div>
+            </div>
+            <div class="modal-footer border-0"><button type="submit" class="btn btn-dark w-100 py-3 fw-bold">CONCLUIR VENDA</button></div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL LIQUIDAR LOTE -->
+<div class="modal fade" id="modalLiquidar" tabindex="-1">
+    <div class="modal-dialog">
+        <form id="formLiquidar" method="POST" class="modal-content p-3">
+            <div class="modal-header border-0"><h5 class="modal-title fw-bold">Ajuste de Markup em Lote</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <p class="text-muted small">Altere o markup de todas as peças disponíveis de um lote simultaneamente.</p>
+                <div class="mb-3">
+                    <label class="form-label">Selecionar Lote</label>
+                    <select id="liquidar_id" class="form-select" onchange="document.getElementById('formLiquidar').action='/colecao/liquidar/'+this.value">
+                        <option value="">Escolha...</option>
+                        {% for c in colecoes %}<option value="{{ c.id }}">{{ c.nome }}</option>{% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3"><label class="form-label">Novo Markup (Ex: 2.0)</label><input type="number" step="0.1" name="novo_markup" class="form-control" required></div>
+            </div>
+            <div class="modal-footer border-0"><button type="submit" class="btn btn-primary w-100">Atualizar Preços do Lote</button></div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL DESPESA -->
+<div class="modal fade" id="modalDespesa" tabindex="-1">
+    <div class="modal-dialog">
+        <form action="/despesa/add" method="POST" class="modal-content p-3">
+            <div class="modal-header border-0"><h5 class="modal-title fw-bold">Nova Despesa</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <div class="mb-3"><label class="form-label">Descrição</label><input type="text" name="descricao" class="form-control" required></div>
+                <div class="row g-3">
+                    <div class="col-6"><label class="form-label">Valor (R$)</label><input type="number" step="0.01" name="valor" class="form-control" required></div>
+                    <div class="col-6"><label class="form-label">Categoria</label><select name="categoria" class="form-select"><option value="Operacional">Operacional</option><option value="Marketing">Marketing (Anúncios)</option></select></div>
+                </div>
+            </div>
+            <div class="modal-footer border-0"><button type="submit" class="btn btn-danger w-100">Registrar</button></div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL CRM / EDIÇÃO -->
+<div class="modal fade" id="modalEdicao" tabindex="-1">
+    <div class="modal-dialog">
+        <form id="formEdicao" method="POST" class="modal-content p-3">
+            <div class="modal-header border-0"><h5 class="modal-title fw-bold">Editar Dados</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <div class="mb-3"><label class="form-label">Nome</label><input type="text" name="nome" id="editNome" class="form-control" required></div>
+                <div class="mb-3"><label class="form-label">URL Foto</label><input type="url" name="foto_url" id="editFoto" class="form-control"></div>
+                <div class="row g-3 mb-3">
+                    <div class="col-6"><label class="form-label">Markup</label><input type="number" step="0.1" name="markup" id="editMarkup" class="form-control"></div>
+                    <div class="col-6"><label class="form-label">Desconto (%)</label><input type="number" name="desconto_ajustado" id="editDesconto" class="form-control"></div>
+                </div>
+                <hr>
+                <div class="row g-3">
+                    <div class="col-12"><label class="form-label">Cliente</label><input type="text" name="cliente_nome" id="editCliente" class="form-control"></div>
+                    <div class="col-6"><label class="form-label">Origem</label><select name="origem_venda" id="editOrigem" class="form-select"><option value="Instagram">Instagram</option><option value="WhatsApp">WhatsApp</option><option value="Tráfego Pago">Tráfego Pago</option><option value="Indicação">Indicação</option></select></div>
+                    <div class="col-6"><label class="form-label">Tag</label><input type="text" name="tag_campanha" id="editTag" class="form-control"></div>
+                </div>
+            </div>
+            <div class="modal-footer border-0"><button type="submit" class="btn btn-dark w-100 py-2">Salvar Alterações</button></div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL NOVO LOTE -->
+<div class="modal fade" id="modalColecao" tabindex="-1">
+    <div class="modal-dialog">
+        <form action="/colecao/add" method="POST" class="modal-content p-3">
+            <div class="modal-header border-0"><h5 class="modal-title fw-bold">Novo Lote</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <div class="mb-3"><label class="form-label">Nome do Lote</label><input type="text" name="nome" class="form-control" required></div>
+                <div class="row g-3 mb-3"><div class="col-6"><label class="form-label">Qtd Peças</label><input type="number" name="qtd_pecas" class="form-control" required></div><div class="col-6"><label class="form-label">Frete (R$)</label><input type="number" step="0.01" name="valor_frete" class="form-control" value="0"></div></div>
+                <div class="mb-0"><label class="form-label">Mimos (R$)</label><input type="number" step="0.01" name="valor_mimos" class="form-control" value="0"></div>
+            </div>
+            <div class="modal-footer border-0"><button type="submit" class="btn btn-dark w-100">Registrar Lote</button></div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL NOVA JOIA -->
+<div class="modal fade" id="modalProduto" tabindex="-1">
+    <div class="modal-dialog">
+        <form action="/produto/add" method="POST" class="modal-content p-3">
+            <div class="modal-header border-0"><h5 class="modal-title fw-bold">Nova Joia</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <div class="mb-3"><label class="form-label">Nome</label><input type="text" name="nome" class="form-control" required></div>
+                <div class="mb-3"><label class="form-label">URL da Foto</label><input type="url" name="foto_url" class="form-control" placeholder="Link da imagem"></div>
+                <div class="mb-3"><label class="form-label">Lote</label><select name="colecao_id" class="form-select">{% for c in colecoes %}<option value="{{ c.id }}">{{ c.nome }}</option>{% endfor %}</select></div>
+                <div class="row g-3"><div class="col-6"><label class="form-label">Custo Base</label><input type="number" step="0.01" name="custo_base" class="form-control" required></div><div class="col-6"><label class="form-label">Markup</label><input type="number" step="0.1" name="markup" class="form-control" value="2.5"></div></div>
+            </div>
+            <div class="modal-footer border-0"><button type="submit" class="btn btn-dark w-100">Salvar no Estoque</button></div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL META -->
+<div class="modal fade" id="modalMeta" tabindex="-1">
+    <div class="modal-dialog">
+        <form action="/meta/update" method="POST" class="modal-content p-3">
+            <div class="modal-header border-0"><h5 class="modal-title fw-bold">Definir Meta</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <div class="mb-3"><label class="form-label">Valor da Meta (Faturamento)</label><input type="number" name="valor_meta" class="form-control" value="{{ meta_valor }}" required></div>
+            </div>
+            <div class="modal-footer border-0"><button type="submit" class="btn btn-dark w-100">Atualizar</button></div>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Filtro de Busca em Tempo Real
-    document.getElementById('searchInput').addEventListener('keyup', function() {
-        let filter = this.value.toLowerCase();
-        let rows = document.querySelectorAll('#tabelaVendas tbody tr');
-        rows.forEach(row => {
-            row.style.display = row.innerText.toLowerCase().includes(filter) ? '' : 'none';
-        });
-    });
+    let precoBaseVenda = 0;
+    function abrirModalVenda(id, nome, precoIdeal) {
+        precoBaseVenda = precoIdeal;
+        document.getElementById('vendaNomeJoia').innerText = nome;
+        document.getElementById('formVenda').action = '/produto/vender/' + id;
+        document.getElementById('vendaDesconto').value = 0;
+        calcularTotalVenda();
+        new bootstrap.Modal(document.getElementById('modalVenda')).show();
+    }
+    function calcularTotalVenda() {
+        const desconto = document.getElementById('vendaDesconto').value || 0;
+        const total = precoBaseVenda * (1 - (desconto / 100));
+        document.getElementById('vendaValorFinal').innerText = 'R$ ' + total.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+    }
+    function abrirModalEdicao(id, nome, markup, cliente, pagamento, desconto, foto, origem, tag) {
+        document.getElementById('formEdicao').action = '/produto/editar/' + id;
+        document.getElementById('editNome').value = nome;
+        document.getElementById('editFoto').value = foto;
+        document.getElementById('editMarkup').value = markup;
+        document.getElementById('editCliente').value = cliente;
+        document.getElementById('editPagamento').value = pagamento;
+        document.getElementById('editDesconto').value = desconto;
+        document.getElementById('editOrigem').value = origem || 'Instagram';
+        document.getElementById('editTag').value = tag || '';
+        new bootstrap.Modal(document.getElementById('modalEdicao')).show();
+    }
+    function abrirModalMeta() { new bootstrap.Modal(document.getElementById('modalMeta')).show(); }
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>

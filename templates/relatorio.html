@@ -3,103 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório Histórico - Autentke</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <title>Relatório BI Online | Autentke</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
     <style>
-        body { background-color: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
-        .report-card { border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .header-gradient { background: linear-gradient(135deg, #212529 0%, #434343 100%); color: white; border-radius: 20px 20px 0 0; }
-        .table thead th { border: none; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; color: #6c757d; }
-        .badge-promo { background-color: #fff0f0; color: #dc3545; border: 1px solid #ffc9c9; }
-        .badge-normal { background-color: #f0fdf4; color: #198754; border: 1px solid #bbf7d0; }
-        .back-btn { border-radius: 12px; transition: 0.3s; }
-        .back-btn:hover { background-color: #000; color: #fff; }
+        :root { --accent: #1a1a1a; --success: #10b981; --bg: #f9fafb; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: #1f2937; }
+        .report-card { background: white; border-radius: 16px; border: 1px solid #e5e7eb; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .stat-box { border-radius: 12px; padding: 1.5rem; background: #ffffff; border: 1px solid #e5e7eb; }
+        .table thead th { background: #f8fafc; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; color: #64748b; border-top: none; }
+        .badge-origem { font-size: 0.7rem; padding: 4px 8px; border-radius: 20px; }
+        @media print { .no-print { display: none; } .report-card { border: none; box-shadow: none; } .stat-box { border: 1px solid #ddd; } }
     </style>
 </head>
-<body class="container py-5">
+<body class="py-5">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+<div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-5">
         <div>
-            <h2 class="fw-bold mb-0">📊 Histórico de Vendas</h2>
-            <p class="text-muted">Consolidado de joias vendidas e arquivadas</p>
+            <h1 class="fw-bold mb-1">AUTENTKE</h1>
+            <p class="text-muted mb-0"><i class="bi bi-graph-up-arrow me-2"></i>Performance de Loja Online</p>
         </div>
-        <a href="/" class="btn btn-outline-dark back-btn fw-bold px-4 shadow-sm">
-            <i class="bi bi-house-door me-2"></i>PAINEL INICIAL
-        </a>
+        <div class="text-end no-print">
+            <button onclick="window.print()" class="btn btn-dark btn-sm px-4 rounded-pill">Imprimir Relatório</button>
+        </div>
     </div>
 
-    <div class="row mb-4">
+    <!-- Stats Principais -->
+    <div class="row g-4 mb-5">
         <div class="col-md-4">
-            <div class="card report-card p-4 text-center">
-                <small class="text-uppercase fw-bold text-muted mb-2">Lucro Real Acumulado</small>
-                <h2 class="fw-bold text-success mb-0">R$ {{ fat_total_lucro|round(2) }}</h2>
+            <div class="stat-box text-center">
+                <span class="text-muted small fw-bold text-uppercase">Faturamento</span>
+                <h3 class="fw-bold mb-0 mt-2">R$ {{ "%.2f"|format(faturamento) }}</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-box text-center">
+                <span class="text-muted small fw-bold text-uppercase text-info">Ticket Médio</span>
+                <h3 class="fw-bold text-info mb-0 mt-2">R$ {{ "%.2f"|format(ticket_medio) }}</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-box text-center" style="background: #f0fdf4;">
+                <span class="text-muted small fw-bold text-uppercase text-success">Lucro Líquido Final</span>
+                <h3 class="fw-bold text-success mb-0 mt-2">R$ {{ "%.2f"|format(lucro_final) }}</h3>
             </div>
         </div>
     </div>
 
-    <div class="card report-card overflow-hidden">
-        <div class="header-gradient p-4">
-            <div class="row align-items-center">
-                <div class="col">
-                    <h5 class="mb-0">Detalhamento de Transações</h5>
-                </div>
-                <div class="col-auto">
-                    <button onclick="window.print()" class="btn btn-sm btn-light fw-bold rounded-pill px-3">
-                        <i class="bi bi-printer me-2"></i>IMPRIMIR PDF
-                    </button>
+    <div class="row g-4 mb-5">
+        <div class="col-md-6">
+            <div class="stat-box text-center">
+                <span class="text-muted small fw-bold text-uppercase text-primary">Invest. Marketing</span>
+                <h3 class="fw-bold text-primary mb-0 mt-2">R$ {{ "%.2f"|format(total_mkt) }}</h3>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="stat-box text-center" style="background: #fffbeb;">
+                <span class="text-muted small fw-bold text-uppercase text-warning">ROI Marketing (Retorno)</span>
+                <h3 class="fw-bold text-warning mb-0 mt-2">{{ "%.1f"|format(faturamento / total_mkt if total_mkt > 0 else 0) }}x</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <!-- Vendas por Origem -->
+        <div class="col-md-6">
+            <div class="report-card p-4 h-100">
+                <h6 class="fw-bold mb-4 text-uppercase small">Vendas por Canal de Origem</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead><tr><th>Canal</th><th class="text-end">Faturamento</th></tr></thead>
+                        <tbody>
+                            {% for origem, valor in origens.items() %}
+                            <tr>
+                                <td><span class="badge bg-light text-dark border">{{ origem if origem else 'Direto/Outros' }}</span></td>
+                                <td class="text-end fw-bold">R$ {{ "%.2f"|format(valor) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-        
+        <!-- Resumo de Despesas -->
+        <div class="col-md-6">
+            <div class="report-card p-4 h-100">
+                <h6 class="fw-bold mb-4 text-uppercase small">Resumo Financeiro</h6>
+                <div class="d-flex justify-content-between mb-2"><span>Lucro Bruto (Peças):</span><span class="fw-bold text-success">R$ {{ "%.2f"|format(lucro_total) }}</span></div>
+                <div class="d-flex justify-content-between mb-2"><span>Despesas Operacionais:</span><span class="fw-bold text-danger">R$ {{ "%.2f"|format(total_despesas - total_mkt) }}</span></div>
+                <div class="d-flex justify-content-between mb-4"><span>Investimento Marketing:</span><span class="fw-bold text-primary">R$ {{ "%.2f"|format(total_mkt) }}</span></div>
+                <hr>
+                <div class="d-flex justify-content-between"><strong>LUCRO LÍQUIDO FINAL:</strong><strong class="text-success h5">R$ {{ "%.2f"|format(lucro_final) }}</strong></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detalhamento de Vendas -->
+    <div class="report-card p-4">
+        <h6 class="fw-bold mb-4 text-uppercase small">Histórico Detalhado de Campanhas</h6>
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="bg-light">
-                    <tr>
-                        <th class="ps-4">Data da Venda</th>
-                        <th>Cliente / ID</th>
-                        <th>Joia</th>
-                        <th>Pagamento</th>
-                        <th>Tipo</th>
-                        <th class="pe-4 text-end">Lucro Líquido</th>
-                    </tr>
-                </thead>
+            <table class="table table-sm align-middle">
+                <thead><tr><th>Data</th><th>Cliente</th><th>Produto</th><th>Origem</th><th>Tag</th><th>Lucro</th></tr></thead>
                 <tbody>
                     {% for v in vendas %}
                     <tr>
-                        <td class="ps-4 small text-muted">{{ v.data_venda }}</td>
-                        <td>
-                            <div class="fw-bold">{{ v.cliente_nome }}</div>
-                            <small class="text-muted">ID: {{ v.cliente_id if v.cliente_id else 'Não Informado' }}</small>
-                        </td>
-                        <td>{{ v.nome }}</td>
-                        <td>
-                            <span class="badge bg-light text-dark border px-3 rounded-pill">{{ v.forma_pagamento }}</span>
-                        </td>
-                        <td>
-                            <span class="badge rounded-pill px-3 {{ 'badge-promo' if v.tipo_venda == 'PROMOÇÃO' else 'badge-normal' }}">
-                                {{ v.tipo_venda }}
-                            </span>
-                        </td>
-                        <td class="pe-4 text-end fw-bold text-dark">
-                            R$ {{ (v.preco_venda - (v.custo_base + v.custo_extra))|round(2) }}
-                        </td>
+                        <td class="small">{{ v.data_venda.strftime('%d/%m/%Y') }}</td>
+                        <td class="fw-bold small">{{ v.cliente_nome }}</td>
+                        <td class="small">{{ v.nome }}</td>
+                        <td><span class="badge bg-light text-dark border small">{{ v.origem_venda }}</span></td>
+                        <td class="text-muted small">{{ v.tag_campanha if v.tag_campanha else '-' }}</td>
+                        <td class="text-success fw-bold small">R$ {{ "%.2f"|format(v.lucro_liquido) }}</td>
                     </tr>
                     {% endfor %}
-                    {% if not vendas %}
-                    <tr>
-                        <td colspan="6" class="text-center py-5 text-muted italic">Nenhuma venda arquivada para exibir.</td>
-                    </tr>
-                    {% endif %}
                 </tbody>
             </table>
         </div>
     </div>
 
-    <footer class="mt-5 text-center text-muted small">
-        <p>© 2026 Autentke - Sistema de Gestão Interna • Porto Velho/RO</p>
-    </footer>
+    <div class="mt-5 text-center text-muted small">
+        <hr class="mb-4">
+        <p>Autentke Online Store BI - @{{ loja.instagram }}</p>
+    </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
