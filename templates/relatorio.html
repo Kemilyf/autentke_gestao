@@ -18,8 +18,25 @@
     </style>
 </head>
 <body class="py-5">
-
+<div class="container mt-3 no-print">
+    <a href="/" class="btn btn-outline-dark rounded-pill px-4">
+        <i class="bi bi-arrow-left me-2"></i>Voltar ao Dashboard
+    </a>
+</div>
 <div class="container">
+    <form method="get" action="{{ url_for('relatorio') }}" class="report-card p-3 mb-4 no-print">
+        <div class="row align-items-end g-3">
+            <div class="col-sm-5">
+                <label for="inicio" class="form-label">Data inicial</label>
+                <input id="inicio" type="date" name="inicio" value="{{ inicio }}" class="form-control" required>
+            </div>
+            <div class="col-sm-5">
+                <label for="fim" class="form-label">Data final</label>
+                <input id="fim" type="date" name="fim" value="{{ fim }}" class="form-control" required>
+            </div>
+            <div class="col-sm-2"><button class="btn btn-dark w-100" type="submit">Filtrar</button></div>
+        </div>
+    </form>
     <div class="d-flex justify-content-between align-items-end mb-5">
         <div>
             <h1 class="fw-bold mb-1">AUTENTKE</h1>
@@ -102,7 +119,7 @@
 
     <!-- Detalhamento de Vendas -->
     <div class="report-card p-4">
-        <h6 class="fw-bold mb-4 text-uppercase small">Histórico Detalhado de Campanhas</h6>
+        <h6 class="fw-bold mb-4 text-uppercase small">Histórico de vendas · {{ inicio }} a {{ fim }}</h6>
         <div class="table-responsive">
             <table class="table table-sm align-middle">
                 <thead><tr><th>Data</th><th>Cliente</th><th>Produto</th><th>Origem</th><th>Tag</th><th>Lucro</th></tr></thead>
@@ -116,6 +133,8 @@
                         <td class="text-muted small">{{ v.tag_campanha if v.tag_campanha else '-' }}</td>
                         <td class="text-success fw-bold small">R$ {{ "%.2f"|format(v.lucro_liquido) }}</td>
                     </tr>
+                    {% else %}
+                    <tr><td colspan="6" class="text-center text-muted py-4">Nenhuma venda neste período.</td></tr>
                     {% endfor %}
                 </tbody>
             </table>

@@ -3,106 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Autentke | Online BI</title>
+    <title>Autentke | Luxury BI & CRM</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --sidebar-bg: #ffffff; --main-bg: #f4f7f6; --accent: #2c3e50; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--main-bg); color: #333; }
-        .sidebar { min-height: 100vh; background: var(--sidebar-bg); border-right: 1px solid #e0e0e0; padding: 1.5rem; position: fixed; width: 240px; z-index: 100; }
-        .main-content { margin-left: 240px; padding: 2rem; }
-        .card-custom { border: none; border-radius: 12px; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
-        .metric-card { padding: 1.2rem; border-left: 5px solid var(--accent); }
-        .metric-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #7f8c8d; font-weight: 600; }
-        .metric-value { font-size: 1.5rem; font-weight: 700; }
-        .table-container { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
-        .joia-img { width: 45px; height: 45px; object-fit: cover; border-radius: 8px; border: 1px solid #eee; }
-        .badge-origem { font-size: 0.7rem; padding: 4px 8px; border-radius: 20px; }
-        .bg-insta { background: #E1306C; color: white; }
-        .bg-whats { background: #25D366; color: white; }
-        .bg-ads { background: #4285F4; color: white; }
-        @media (max-width: 768px) { .sidebar { width: 100%; position: relative; min-height: auto; } .main-content { margin-left: 0; } }
+        :root { --gold: #D4AF37; --dark: #1A1A1A; --bg: #F8F9FA; --luxury-white: #FFFFFF; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--dark); overflow-x: hidden; }
+        h1, h2, h3, .luxury-font { font-family: 'Cormorant Garamond', serif; }
+
+        .sidebar { height: 100vh; background: var(--dark); color: white; position: fixed; padding-top: 2rem; width: 260px; z-index: 1000; box-shadow: 4px 0 15px rgba(0,0,0,0.1); overflow-y: auto; }
+        .sidebar-brand { text-align: center; font-size: 2.2rem; letter-spacing: 5px; margin-bottom: 3rem; font-weight: 700; color: var(--gold); }
+        .nav-link { color: rgba(255,255,255,0.7); padding: 12px 25px; font-size: 0.9rem; transition: 0.3s; border-left: 3px solid transparent; }
+        .nav-link:hover, .nav-link.active { color: var(--gold); background: rgba(255,255,255,0.05); border-left: 3px solid var(--gold); }
+        .nav-link i { margin-right: 12px; width: 20px; }
+
+        .main-content { margin-left: 260px; padding: 2rem 3rem; }
+
+        .metric-card { background: var(--luxury-white); border: none; border-radius: 0; padding: 1.5rem; box-shadow: 0 5px 20px rgba(0,0,0,0.03); border-bottom: 3px solid transparent; transition: 0.4s; }
+        .metric-card:hover { transform: translateY(-5px); border-bottom: 3px solid var(--gold); }
+        .metric-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: #999; margin-bottom: 0.5rem; font-weight: 600; }
+        .metric-value { font-size: 1.8rem; font-weight: 700; font-family: 'Cormorant Garamond', serif; }
+
+        .progress { height: 6px; background-color: #EEE; border-radius: 0; overflow: visible; margin-top: 1rem; }
+        .progress-bar { background-color: var(--gold); position: relative; }
+
+        .card-section { background: white; border-radius: 0; border: none; box-shadow: 0 5px 25px rgba(0,0,0,0.02); margin-bottom: 2rem; padding: 2rem; }
+        .section-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; border-left: 4px solid var(--gold); padding-left: 15px; }
+        .table { font-size: 0.9rem; vertical-align: middle; }
+        .img-thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; background: #F0F0F0; }
+
+        .btn-luxury { background: var(--dark); color: white; border-radius: 0; padding: 10px 25px; font-size: 0.8rem; letter-spacing: 1px; transition: 0.3s; }
+        .btn-luxury:hover { background: var(--gold); color: white; }
+
+        .filter-btn { border: 1px solid #EEE; background: white; padding: 8px 18px; font-size: 0.75rem; letter-spacing: 1px; margin-right: 5px; transition: 0.3s; }
+        .filter-btn:hover, .filter-btn.active { background: var(--dark); color: white; border-color: var(--dark); }
+
+        .btn-total { background: #f0f0f0; color: #666; border: 1px solid #ddd; font-size: 0.7rem; padding: 5px 15px; letter-spacing: 1px; }
+        .btn-total:hover { background: var(--gold); color: white; border-color: var(--gold); }
+
+        .badge-old { background: #f8f9fa; color: #999; border: 1px solid #ddd; font-size: 0.6rem; }
+        .text-gold { color: #9a7611; }
+        .empty-state { padding: 2.5rem 1rem; text-align: center; color: #777; }
+        .expense-list { max-height: 340px; overflow-y: auto; }
+        @media (max-width: 991.98px) {
+            .sidebar { position: static; width: 100%; height: auto; padding: 1rem; }
+            .sidebar-brand { font-size: 1.6rem; margin-bottom: .75rem; }
+            .sidebar .nav { flex-direction: row !important; flex-wrap: wrap; justify-content: center; }
+            .nav-link { padding: .6rem .75rem; }
+            .main-content { margin-left: 0; padding: 1.5rem; }
+        }
+        @media (max-width: 575.98px) {
+            .main-content { padding: 1rem; }
+            .card-section { padding: 1rem; }
+            .metric-value { font-size: 1.45rem; }
+            .section-title { font-size: 1.2rem; }
+        }
     </style>
 </head>
 <body>
 
 <div class="sidebar">
-    <div class="text-center mb-5"><h3 class="fw-bold">AUTENTKE</h3><span class="badge bg-dark">Online Store BI</span></div>
-    <div class="d-grid gap-2">
-        <button class="btn btn-dark w-100 btn-sm" data-bs-toggle="modal" data-bs-target="#modalColecao">Novo Lote</button>
-        <button class="btn btn-outline-dark w-100 btn-sm" data-bs-toggle="modal" data-bs-target="#modalProduto">Nova Joia</button>
-        <button class="btn btn-outline-danger w-100 btn-sm" data-bs-toggle="modal" data-bs-target="#modalDespesa">Nova Despesa</button>
-        <button class="btn btn-outline-primary w-100 btn-sm" data-bs-toggle="modal" data-bs-target="#modalLiquidar">Liquidar Lote</button>
-        <hr class="my-3">
-        <a href="/" class="nav-link p-2 active fw-bold text-dark small"><i class="bi bi-grid-1x2-fill me-2"></i>Dashboard</a>
-        <a href="/relatorio" target="_blank" class="nav-link p-2 text-muted small"><i class="bi bi-file-earmark-bar-graph me-2"></i>Relatórios</a>
-    </div>
+    <div class="sidebar-brand luxury-font">AUTENTKE</div>
+    <nav class="nav flex-column">
+        <a class="nav-link active" href="/"><i class="fas fa-chart-line"></i> Dashboard</a>
+        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#modalColecao"><i class="fas fa-layer-group"></i> Gerenciar Lotes</a>
+        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#modalProduto"><i class="fas fa-gem"></i> Adicionar Joia</a>
+        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#modalDespesa"><i class="fas fa-receipt"></i> Despesas</a>
+        <a class="nav-link" href="{{ url_for('relatorio') }}"><i class="fas fa-file-invoice"></i> Relatórios</a>
+        <a class="nav-link" href="{{ url_for('catalogo') }}" target="_blank" rel="noopener" style="color: var(--gold);"><i class="fas fa-book-open"></i> Lookbook Digital</a>
+        <form action="{{ url_for('logout') }}" method="post" class="mt-3">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="nav-link border-0 bg-transparent w-100 text-start" type="submit"><i class="fas fa-sign-out-alt"></i> Sair</button>
+        </form>
+    </nav>
 </div>
 
 <div class="main-content">
-    {% with messages = get_flashed_messages() %}{% if messages %}{% for message in messages %}
-    <div class="alert alert-info alert-dismissible fade show border-0 shadow-sm mb-4" role="alert" style="border-radius: 12px;">
-        <i class="bi bi-info-circle me-2"></i> {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-    {% endfor %}{% endif %}{% endwith %}
 
-    <!-- Header & Metas -->
     <div class="row align-items-center mb-5">
         <div class="col-md-6">
-            <h2 class="fw-bold mb-0">Visão Geral</h2>
-            <p class="text-muted small">Crescimento e Marketing da Autentke.</p>
+            <h1 class="luxury-font">Performance Atual</h1>
+            <p class="dashboard-subtitle text-muted small text-uppercase letter-spacing-2">Dados do Mês e Coleções Ativas</p>
         </div>
-        <div class="col-md-6">
-            <div class="card-custom p-3">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="small fw-bold text-uppercase">Meta de Vendas</span>
-                    <span class="small text-muted" onclick="abrirModalMeta()" style="cursor:pointer">R$ {{ "%.0f"|format(meta_valor) }} <i class="bi bi-pencil-square"></i></span>
-                </div>
-                <div class="progress mb-1" style="height: 8px;"><div class="progress-bar bg-success" style="width: {{ progresso_meta }}%"></div></div>
-                <div class="d-flex justify-content-between small text-muted">
-                    <span>{{ "%.1f"|format(progresso_meta) }}%</span>
-                    <span>Origens: <i class="bi bi-instagram text-danger"></i> {{ vendas_insta }} | <i class="bi bi-whatsapp text-success"></i> {{ vendas_whats }}</span>
-                </div>
+        <div class="col-md-6 text-end">
+            <button id="metricasTotais" class="btn btn-total" type="button"><i class="fas fa-globe me-2"></i> VER MÉTRICA TOTAL (HISTÓRICO)</button>
+        </div>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+            {{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+        </div>
+        {% endfor %}
+    {% endwith %}
+
+    <!-- Métricas Dinâmicas -->
+    <div class="row mb-5" id="containerMetricas">
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="metric-label">Faturamento Atual</div>
+                <div class="metric-value" id="valFaturamento">R$ {{ "%.2f"|format(m.faturamento) }}</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="metric-label">Lucro Líquido Atual</div>
+                <div class="metric-value text-success" id="valLucro">R$ {{ "%.2f"|format(m.lucro_liquido) }}</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="metric-label">Vendas do Ciclo</div>
+                <div class="metric-value" id="valVendas">{{ m.total_vendas }}</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="metric-label">Ticket Médio</div>
+                <div class="metric-value" id="valTicket">R$ {{ "%.2f"|format(m.ticket_medio) }}</div>
             </div>
         </div>
     </div>
 
-    <!-- Metrics Row -->
-    <!-- Metrics Row Principais -->
-    <div class="row g-3 mb-4">
-        <div class="col-md-4"><div class="card-custom metric-card border-primary"><div class="metric-label">Faturamento Total</div><div class="metric-value">R$ {{ "%.2f"|format(faturamento) }}</div></div></div>
-        <div class="col-md-4"><div class="card-custom metric-card border-info"><div class="metric-label">Ticket Médio</div><div class="metric-value">R$ {{ "%.2f"|format(ticket_medio) }}</div></div></div>
-        <div class="col-md-4"><div class="card-custom metric-card border-success"><div class="metric-label text-success">Lucro Líquido Final</div><div class="metric-value text-success">R$ {{ "%.2f"|format(lucro_final) }}</div></div></div>
-    </div>
-
-    <!-- Metrics Row Secundárias -->
-    <div class="row g-3 mb-5">
-        <div class="col-md-6"><div class="card-custom metric-card border-warning" style="padding: 1rem;"><div class="metric-label">Lucro Bruto (Peças)</div><div class="fw-bold">R$ {{ "%.2f"|format(lucro_real) }}</div></div></div>
-        <div class="col-md-6"><div class="card-custom metric-card border-danger" style="padding: 1rem;"><div class="metric-label text-danger">Despesas Fixas Totais</div><div class="fw-bold text-danger">R$ {{ "%.2f"|format(total_despesas) }}</div></div></div>
-    </div>
-
-    <!-- Estoque -->
-    <div class="table-container mb-5">
-        <h6 class="fw-bold mb-4 text-uppercase"><i class="bi bi-gem me-2"></i>Estoque Ativo</h6>
+    <!-- Estoque Ativo -->
+    <div class="card-section">
+        <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center mb-4">
+            <h3 class="section-title m-0">Estoque Ativo (Vitrines Atuais)</h3>
+            <div class="d-flex flex-wrap gap-2">
+                <form action="{{ url_for('index') }}" method="get" class="d-flex">
+                    <input type="search" class="form-control form-control-sm" name="q" value="{{ search_query }}" placeholder="Buscar joia" aria-label="Buscar joia">
+                    {% if cat_filter %}<input type="hidden" name="categoria" value="{{ cat_filter }}">{% endif %}
+                    <button class="btn btn-sm btn-outline-dark ms-1" type="submit">Buscar</button>
+                </form>
+                <a href="{{ url_for('index', categoria='Brincos', q=search_query) }}" class="filter-btn {{ 'active' if cat_filter == 'Brincos' }}">Brincos</a>
+                <a href="{{ url_for('index', categoria='Anéis', q=search_query) }}" class="filter-btn {{ 'active' if cat_filter == 'Anéis' }}">Anéis</a>
+                <a href="{{ url_for('index', q=search_query) }}" class="filter-btn {{ 'active' if not cat_filter }}">Ver Todos</a>
+            </div>
+        </div>
         <div class="table-responsive">
-            <table class="table table-hover align-middle">
-                <thead><tr class="small text-muted"><th>Foto</th><th>Item</th><th>Lote</th><th>Markup</th><th>Preço</th><th class="text-end">Ações</th></tr></thead>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Foto</th>
+                        <th>Joia</th>
+                        <th>Lote</th>
+                        <th>Preço Sugerido</th>
+                        <th class="text-end">Ações</th>
+                    </tr>
+                </thead>
                 <tbody>
                     {% for p in estoque %}
                     <tr>
-                        <td><img src="{{ p.foto_url if p.foto_url else 'https://via.placeholder.com/45' }}" class="joia-img shadow-sm"></td>
-                        <td class="fw-bold">{{ p.nome }}</td>
-                        <td class="small text-muted">{{ p.colecao.nome }}</td>
-                        <td><span class="badge bg-light text-dark">{{ "%.1f"|format(p.markup) }}x</span></td>
+                        <td><img src="{{ p.foto_url if p.foto_url else url_for('static', filename='logo_autentke.png') }}" class="img-thumb" alt="Foto de {{ p.nome }}" loading="lazy"></td>
                         <td>
-                            <div class="fw-bold text-primary">R$ {{ "%.2f"|format(p.preco_ideal) }}</div>
-                            <div class="text-muted" style="font-size: 0.7rem;">Custo: R$ {{ "%.2f"|format(p.custo_base + p.colecao.rateio_unidade) }}</div>
+                            <div class="fw-bold">{{ p.nome }}</div>
+                            <div class="small text-muted">{{ p.categoria }}</div>
+                            {% if p.documento_pedido %}
+                            <a class="small" href="{{ url_for('download_documento_pedido', documento_id=p.documento_pedido.id) }}">Ver nota do pedido</a>
+                            {% elif p.anexo %}
+                            <a class="small" href="{{ url_for('download_anexo', anexo_id=p.anexo.id) }}">Ver anexo</a>
+                            {% endif %}
                         </td>
+                        <td><span class="badge bg-dark">{{ p.colecao.nome }}</span></td>
+                        <td class="fw-bold text-gold">R$ {{ "%.2f"|format(p.preco_ideal) }}</td>
                         <td class="text-end">
-                            <button class="btn btn-success btn-sm px-3 rounded-pill" onclick="abrirModalVenda({{ p.id }}, '{{ p.nome }}', {{ p.preco_ideal }})">Vender</button>
-                            <button class="btn btn-light btn-sm mx-1 rounded-circle" onclick="abrirModalEdicao({{ p.id }}, '{{ p.nome }}', {{ p.markup }}, '{{ p.cliente_nome }}', '{{ p.forma_pagamento }}', {{ p.desconto_aplicado }}, '{{ p.foto_url }}', '{{ p.origem_venda }}', '{{ p.tag_campanha }}')"><i class="bi bi-pencil"></i></button>
+                            <button class="btn btn-sm btn-outline-dark rounded-0 me-1 js-editar-produto" type="button"
+                                data-id="{{ p.id }}" data-nome="{{ p.nome }}" data-categoria="{{ p.categoria }}"
+                                data-custo="{{ p.custo_base }}" data-markup="{{ p.markup }}"
+                                data-manual="{{ p.preco_venda_manual or '' }}" data-foto="{{ p.foto_url or '' }}"
+                                data-bs-toggle="modal" data-bs-target="#modalEditarProduto">EDITAR</button>
+                            <button class="btn btn-sm btn-dark rounded-0 me-1 js-vender" type="button" data-id="{{ p.id }}" data-nome="{{ p.nome }}" data-preco="{{ p.preco_ideal }}">VENDER</button>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="5"><div class="empty-state">Nenhuma joia disponível com esses filtros. Cadastre uma peça ou ajuste a busca.</div></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Estoque Antigo / Arquivado -->
+    {% if estoque_antigo %}
+    <div class="card-section" style="opacity: 0.8;">
+        <h3 class="section-title" style="border-color: #ccc; color: #666;">Estoque Antigo (Lotes Arquivados)</h3>
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead>
+                    <tr class="text-muted">
+                        <th>Joia</th>
+                        <th>Lote Original</th>
+                        <th>Custo</th>
+                        <th class="text-end">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in estoque_antigo %}
+                    <tr>
+                        <td class="text-muted">{{ p.nome }}</td>
+                        <td><span class="badge badge-old">{{ p.colecao.nome }}</span></td>
+                        <td class="text-muted">R$ {{ "%.2f"|format(p.custo_base) }}</td>
+                        <td class="text-end">
+                            <button class="btn btn-sm btn-outline-dark rounded-0 me-1 js-editar-produto" type="button"
+                                data-id="{{ p.id }}" data-nome="{{ p.nome }}" data-categoria="{{ p.categoria }}"
+                                data-custo="{{ p.custo_base }}" data-markup="{{ p.markup }}"
+                                data-manual="{{ p.preco_venda_manual or '' }}" data-foto="{{ p.foto_url or '' }}"
+                                data-bs-toggle="modal" data-bs-target="#modalEditarProduto">EDITAR</button>
+                            <button class="btn btn-sm btn-outline-secondary rounded-0 js-vender" type="button" data-id="{{ p.id }}" data-nome="{{ p.nome }}" data-preco="{{ p.preco_ideal }}">VENDER SALDO</button>
                         </td>
                     </tr>
                     {% endfor %}
@@ -110,142 +219,310 @@
             </table>
         </div>
     </div>
+    {% endif %}
+
+    <div class="card-section">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+            <h3 class="section-title m-0">Despesas recentes</h3>
+            <button class="btn btn-luxury" type="button" data-bs-toggle="modal" data-bs-target="#modalDespesa">ADICIONAR DESPESA</button>
+        </div>
+        <div class="table-responsive expense-list">
+            <table class="table table-sm">
+                <thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th class="text-end">Valor</th></tr></thead>
+                <tbody>
+                    {% for despesa in despesas %}
+                    <tr>
+                        <td>{{ despesa.data.strftime('%d/%m/%Y') if despesa.data else '—' }}</td>
+                        <td>{{ despesa.descricao }}</td>
+                        <td>{{ despesa.categoria }}</td>
+                        <td class="text-end">R$ {{ "%.2f"|format(despesa.valor) }}</td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="4" class="empty-state">Nenhuma despesa cadastrada.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card-section" id="estoque-brindes">
+        <h3 class="section-title">Estoque de brindes</h3>
+        <p class="small text-muted">Itens configurados com consumo por venda são baixados automaticamente ao registrar uma venda.</p>
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead><tr><th>Item</th><th>Estoque</th><th>Por venda</th><th>Custo por unidade</th><th>Status</th></tr></thead>
+                <tbody>
+                    {% for item in brindes %}
+                    <tr>
+                        <td>{{ item.nome }}</td>
+                        <td>{{ "%.2f"|format(item.quantidade_estoque) }} {{ item.unidade }}</td>
+                        <td>{{ "%.2f"|format(item.consumo_por_venda) }} {{ item.unidade }}</td>
+                        <td>R$ {{ "%.4f"|format(item.custo_unitario) }} / {{ item.unidade }}</td>
+                        <td>
+                            {% if not item.ativo %}
+                            <span class="badge bg-secondary">Sem baixa automática</span>
+                            {% elif item.quantidade_estoque + 0.000000001 < item.consumo_por_venda %}
+                            <span class="badge bg-warning text-dark">Estoque baixo</span>
+                            {% else %}
+                            <span class="badge bg-success">Ativo</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="5" class="empty-state">Nenhum brinde controlado. Ao registrar uma despesa, marque “Adicionar ao estoque de brindes”.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
 
-<!-- MODAL VENDA (Marketing Edition) -->
-<div class="modal fade" id="modalVenda" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <form id="formVenda" method="POST" class="modal-content p-3">
-            <div class="modal-header border-0"><h5 class="modal-title fw-bold">Registrar Venda Online</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body">
-                <div class="mb-4 text-center"><h4 id="vendaNomeJoia" class="fw-bold text-dark mb-1"></h4></div>
-                <div class="row g-3">
-                    <div class="col-12"><label class="form-label">Nome da Cliente</label><input type="text" name="cliente_nome" class="form-control" required></div>
-                    <div class="col-md-6">
-                        <label class="form-label">Origem da Venda</label>
-                        <select name="origem_venda" class="form-select">
-                            <option value="Instagram">Instagram</option>
-                            <option value="WhatsApp">WhatsApp</option>
-                            <option value="Tráfego Pago">Tráfego Pago</option>
-                            <option value="Indicação">Indicação</option>
+<!-- MODAIS -->
+
+<!-- Modal Gerenciar Lotes -->
+<div class="modal fade" id="modalColecao" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title luxury-font">Gerenciar Lotes & Arquivo</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form action="{{ url_for('add_colecao') }}" method="POST" class="mb-5 p-3 border">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <h6 class="fw-bold mb-3">Novo Lote</h6>
+                    <div class="row">
+                        <div class="col-md-4 mb-3"><label class="form-label" for="loteNome">Nome do lote</label><input id="loteNome" type="text" name="nome" class="form-control" maxlength="100" required></div>
+                        <div class="col-md-2 mb-3"><label class="form-label" for="loteQtd">Peças</label><input id="loteQtd" type="number" name="qtd_pecas" class="form-control" min="1" max="100000" required></div>
+                        <div class="col-md-2 mb-3"><label class="form-label" for="loteFrete">Frete (R$)</label><input id="loteFrete" type="number" name="valor_frete" class="form-control" min="0" step="0.01" value="0"></div>
+                        <div class="col-md-2 mb-3"><label class="form-label" for="loteMimos">Mimos (R$)</label><input id="loteMimos" type="number" name="valor_mimos" class="form-control" min="0" step="0.01" value="0"></div>
+                        <div class="col-md-2 mb-3 d-flex align-items-end"><button type="submit" class="btn btn-dark w-100">CRIAR</button></div>
+                    </div>
+                </form>
+
+                <h6 class="fw-bold mb-3">Lotes Existentes</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead><tr><th>Lote</th><th>Status</th><th>Ação</th></tr></thead>
+                        <tbody>
+                            {% for c in colecoes %}
+                            <tr>
+                                <td>{{ c.nome }}</td>
+                                <td>{{ 'ARQUIVADO' if c.arquivada else 'ATIVO' }}</td>
+                                <td>
+                                    <form action="{{ url_for('arquivar_colecao', id=c.id) }}" method="post">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                        <button class="btn btn-sm {{ 'btn-success' if c.arquivada else 'btn-warning' }}" type="submit">
+                                            {{ 'REATIVAR' if c.arquivada else 'ARQUIVAR' }}
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Venda -->
+<div id="modalVenda" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <form id="formVenda" method="POST" class="modal-content">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="modal-header">
+                <h5 class="modal-title luxury-font">Registrar Venda: <span id="vendaNomeJoia"></span></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="mb-3">
+                    <label class="metric-label">Nome da Cliente</label>
+                    <input type="text" name="cliente_nome" class="form-control rounded-0" required>
+                </div>
+                <div class="mb-3">
+                    <label class="metric-label" for="clienteTelefone">Telefone (opcional)</label>
+                    <input id="clienteTelefone" type="tel" name="cliente_telefone" class="form-control rounded-0" autocomplete="tel">
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="metric-label">Pagamento</label>
+                        <select name="forma_pagamento" class="form-select rounded-0">
+                            <option value="Pix">Pix</option>
+                            <option value="Cartão">Cartão</option>
+                            <option value="Dinheiro">Dinheiro</option>
                         </select>
                     </div>
-                    <div class="col-md-6"><label class="form-label">Tag Campanha</label><input type="text" name="tag_campanha" class="form-control" placeholder="#PROMO_VERAO"></div>
-                    <div class="col-md-6"><label class="form-label">Pagamento</label><select name="forma_pagamento" class="form-select"><option>Pix</option><option>Cartão</option><option>Dinheiro</option></select></div>
-                    <div class="col-md-6"><label class="form-label">Desconto (%)</label><input type="number" id="vendaDesconto" name="desconto_manual" class="form-control" value="0" oninput="calcularTotalVenda()"></div>
+                    <div class="col-md-6 mb-3">
+                        <label class="metric-label">Desconto (%)</label>
+                        <input type="number" name="desconto_manual" id="descVenda" class="form-control rounded-0" value="0" min="0" max="100" step="0.1" oninput="calcularTotalVenda()">
+                    </div>
                 </div>
-                <div class="bg-light p-4 rounded-4 mt-4 text-center border">
-                    <div class="text-muted small fw-bold mb-1">VALOR FINAL</div>
-                    <div class="h2 fw-bold text-success mb-0" id="vendaValorFinal">R$ 0,00</div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="metric-label" for="numParcelas">Parcelas</label>
+                        <input id="numParcelas" type="number" name="num_parcelas" class="form-control rounded-0" value="1" min="1" max="24">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="metric-label" for="origemVenda">Origem</label>
+                        <select id="origemVenda" name="origem_venda" class="form-select rounded-0">
+                            <option value="Instagram">Instagram</option>
+                            <option value="WhatsApp">WhatsApp</option>
+                            <option value="Loja física">Loja física</option>
+                            <option value="Indicação">Indicação</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer border-0"><button type="submit" class="btn btn-dark w-100 py-3 fw-bold">CONCLUIR VENDA</button></div>
-        </form>
-    </div>
-</div>
-
-<!-- MODAL LIQUIDAR LOTE -->
-<div class="modal fade" id="modalLiquidar" tabindex="-1">
-    <div class="modal-dialog">
-        <form id="formLiquidar" method="POST" class="modal-content p-3">
-            <div class="modal-header border-0"><h5 class="modal-title fw-bold">Ajuste de Markup em Lote</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body">
-                <p class="text-muted small">Altere o markup de todas as peças disponíveis de um lote simultaneamente.</p>
                 <div class="mb-3">
-                    <label class="form-label">Selecionar Lote</label>
-                    <select id="liquidar_id" class="form-select" onchange="document.getElementById('formLiquidar').action='/colecao/liquidar/'+this.value">
-                        <option value="">Escolha...</option>
-                        {% for c in colecoes %}<option value="{{ c.id }}">{{ c.nome }}</option>{% endfor %}
-                    </select>
+                    <label class="metric-label" for="tagCampanha">Campanha (opcional)</label>
+                    <input id="tagCampanha" type="text" name="tag_campanha" class="form-control rounded-0" maxlength="50">
                 </div>
-                <div class="mb-3"><label class="form-label">Novo Markup (Ex: 2.0)</label><input type="number" step="0.1" name="novo_markup" class="form-control" required></div>
+                <div class="p-3 bg-light text-center mt-3">
+                    <div class="metric-label">Total Final</div>
+                    <div class="h4 fw-bold mb-0">R$ <span id="totalVenda">0,00</span></div>
+                </div>
             </div>
-            <div class="modal-footer border-0"><button type="submit" class="btn btn-primary w-100">Atualizar Preços do Lote</button></div>
+            <div class="modal-footer border-0">
+                <button type="submit" class="btn btn-luxury w-100">CONFIRMAR VENDA</button>
+            </div>
         </form>
     </div>
 </div>
 
-<!-- MODAL DESPESA -->
+<!-- Modal Adicionar Joia -->
+<div class="modal fade" id="modalProduto" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <form action="{{ url_for('add_produto') }}" method="POST" enctype="multipart/form-data" id="formProduto" class="modal-content">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="modal-header">
+                <h5 class="modal-title luxury-font">Adicionar Joia</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="alert alert-info py-2 small" role="status">Anexe a nota do pedido para sugerir nome e custo. Para exibir imagens no catálogo, use o campo separado de foto da joia.</div>
+                <div class="mb-3">
+                    <label class="metric-label" for="anexoProduto">Nota ou documento com os dados (opcional)</label>
+                    <input id="anexoProduto" type="file" name="anexo" class="form-control" accept=".jpg,.jpeg,.png,.webp,.pdf,application/pdf,image/jpeg,image/png,image/webp">
+                    <button id="extrairAnexo" class="btn btn-outline-dark btn-sm mt-2" type="button">Ler anexo e sugerir dados</button>
+                    <div id="statusExtracao" class="small mt-2" role="status" aria-live="polite"></div>
+                </div>
+                <div id="produtoCamposUnicos">
+                    <div class="mb-3"><label class="metric-label" for="produtoNome">Nome</label><input id="produtoNome" type="text" name="nome" class="form-control" maxlength="100" required></div>
+                    <div class="mb-3"><label class="metric-label" for="produtoCategoria">Categoria</label><input id="produtoCategoria" type="text" name="categoria" class="form-control" maxlength="50" value="Outros"></div>
+                    <div class="mb-3" id="fotoProdutoUnico">
+                        <label class="metric-label" for="fotoProduto">Foto da joia (opcional)</label>
+                        <input id="fotoProduto" type="file" name="foto" class="form-control" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
+                        <div class="form-text">JPG, PNG ou WEBP; máximo de 10 MB. Esta imagem aparecerá no catálogo.</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="metric-label">Lote</label>
+                        <select name="colecao_id" class="form-select">
+                            {% for c in colecoes if not c.arquivada %}
+                            <option value="{{ c.id }}" data-rateio="{{ c.rateio_unidade }}">{{ c.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3" id="custoProdutoUnico"><label class="metric-label" for="produtoCusto">Custo (R$)</label><input id="produtoCusto" type="number" min="0" max="1000000000" step="0.01" name="custo_base" class="form-control" required></div>
+                </div>
+                <div id="listaItensExtraidos" class="d-none">
+                    <p class="small text-muted">Revise os itens e os custos extraídos; cada linha selecionada vira um produto no estoque. Itens de embalagem vêm desmarcados. O anexo do pedido será guardado junto com cada joia selecionada; você também pode escolher uma foto individual em cada linha.</p>
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle">
+                            <thead><tr><th>Incluir</th><th>Descrição da joia</th><th>Categoria</th><th>Custo (R$)</th><th>Foto</th><th>Preço ideal</th></tr></thead>
+                            <tbody id="itensExtraidos"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3"><label class="metric-label" for="produtoMarkup">Markup</label><input id="produtoMarkup" type="number" min="0.01" max="100" step="0.01" name="markup" class="form-control" value="2.5"></div>
+                    <div class="col-md-6 mb-3"><label class="metric-label" for="produtoPrecoManual">Preço manual (opcional)</label><input id="produtoPrecoManual" type="number" min="0" step="0.01" name="preco_venda_manual" class="form-control"></div>
+                </div>
+                <p class="mb-3">Preço ideal estimado: <strong id="precoIdealPreview" aria-live="polite">—</strong></p>
+                <div class="mb-3" id="fotoUrlUnica"><label class="metric-label" for="produtoFotoUrl">Link da foto (opcional)</label><input id="produtoFotoUrl" type="url" name="foto_url" class="form-control"></div>
+            </div>
+
+            <div class="modal-footer border-0"><button id="cadastrarProduto" type="submit" class="btn btn-luxury w-100">CADASTRAR</button></div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Editar Joia -->
+<div class="modal fade" id="modalEditarProduto" tabindex="-1">
+    <div class="modal-dialog">
+        <form id="formEditarProduto" method="POST" enctype="multipart/form-data" class="modal-content">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="modal-header">
+                <h5 class="modal-title luxury-font">Editar Joia</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3"><label class="metric-label" for="editarNome">Nome</label><input id="editarNome" name="nome" class="form-control" maxlength="100" required></div>
+                <div class="mb-3"><label class="metric-label" for="editarCategoria">Categoria</label><input id="editarCategoria" name="categoria" class="form-control" maxlength="50" required></div>
+                <div class="mb-3"><label class="metric-label" for="editarCusto">Custo (R$)</label><input id="editarCusto" name="custo_base" type="number" min="0" max="1000000000" step="0.01" class="form-control" required></div>
+                <div class="mb-3"><label class="metric-label" for="editarMarkup">Markup</label><input id="editarMarkup" name="markup" type="number" min="0.01" max="100" step="0.01" class="form-control" required></div>
+                <div class="mb-3"><label class="metric-label" for="editarPrecoManual">Preço manual (opcional)</label><input id="editarPrecoManual" name="preco_venda_manual" type="number" min="0" max="1000000000" step="0.01" class="form-control"></div>
+                <div class="mb-3">
+                    <label class="metric-label" for="editarFoto">Foto da joia</label>
+                    <input id="editarFoto" name="foto" type="file" class="form-control" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
+                    <div class="form-text" id="fotoAtualProduto"></div>
+                    <img id="editarFotoPreview" class="img-thumbnail mt-2 d-none" alt="Foto atual da joia" style="max-width: 120px; max-height: 120px; object-fit: cover;">
+                    <label class="form-check mt-2"><input class="form-check-input" type="checkbox" name="remover_foto" value="1"> Remover foto atual</label>
+                </div>
+            </div>
+            <div class="modal-footer"><button type="submit" class="btn btn-luxury w-100">SALVAR ALTERAÇÕES</button></div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Despesas -->
 <div class="modal fade" id="modalDespesa" tabindex="-1">
     <div class="modal-dialog">
-        <form action="/despesa/add" method="POST" class="modal-content p-3">
-            <div class="modal-header border-0"><h5 class="modal-title fw-bold">Nova Despesa</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body">
-                <div class="mb-3"><label class="form-label">Descrição</label><input type="text" name="descricao" class="form-control" required></div>
-                <div class="row g-3">
-                    <div class="col-6"><label class="form-label">Valor (R$)</label><input type="number" step="0.01" name="valor" class="form-control" required></div>
-                    <div class="col-6"><label class="form-label">Categoria</label><select name="categoria" class="form-select"><option value="Operacional">Operacional</option><option value="Marketing">Marketing (Anúncios)</option></select></div>
-                </div>
+        <form action="{{ url_for('add_despesa') }}" method="post" class="modal-content">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="modal-header">
+                <h5 class="modal-title luxury-font">Registrar despesa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
             </div>
-            <div class="modal-footer border-0"><button type="submit" class="btn btn-danger w-100">Registrar</button></div>
-        </form>
-    </div>
-</div>
-
-<!-- MODAL CRM / EDIÇÃO -->
-<div class="modal fade" id="modalEdicao" tabindex="-1">
-    <div class="modal-dialog">
-        <form id="formEdicao" method="POST" class="modal-content p-3">
-            <div class="modal-header border-0"><h5 class="modal-title fw-bold">Editar Dados</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
             <div class="modal-body">
-                <div class="mb-3"><label class="form-label">Nome</label><input type="text" name="nome" id="editNome" class="form-control" required></div>
-                <div class="mb-3"><label class="form-label">URL Foto</label><input type="url" name="foto_url" id="editFoto" class="form-control"></div>
-                <div class="row g-3 mb-3">
-                    <div class="col-6"><label class="form-label">Markup</label><input type="number" step="0.1" name="markup" id="editMarkup" class="form-control"></div>
-                    <div class="col-6"><label class="form-label">Desconto (%)</label><input type="number" name="desconto_ajustado" id="editDesconto" class="form-control"></div>
+                <div class="mb-3"><label class="form-label" for="despesaDescricao">Descrição</label><input id="despesaDescricao" name="descricao" class="form-control" maxlength="100" required></div>
+                <div class="row">
+                    <div class="col-sm-6 mb-3"><label class="form-label" for="despesaValor">Valor (R$)</label><input id="despesaValor" type="number" name="valor" class="form-control" min="0" step="0.01" required></div>
+                    <div class="col-sm-6 mb-3"><label class="form-label" for="despesaCategoria">Categoria</label><select id="despesaCategoria" name="categoria" class="form-select"><option>Operacional</option><option>Marketing</option><option>Frete</option><option>Embalagem</option><option>Outra</option></select></div>
                 </div>
+                <div><label class="form-label" for="despesaData">Data</label><input id="despesaData" type="date" name="data" class="form-control"></div>
                 <hr>
-                <div class="row g-3">
-                    <div class="col-12"><label class="form-label">Cliente</label><input type="text" name="cliente_nome" id="editCliente" class="form-control"></div>
-                    <div class="col-6"><label class="form-label">Origem</label><select name="origem_venda" id="editOrigem" class="form-select"><option value="Instagram">Instagram</option><option value="WhatsApp">WhatsApp</option><option value="Tráfego Pago">Tráfego Pago</option><option value="Indicação">Indicação</option></select></div>
-                    <div class="col-6"><label class="form-label">Tag</label><input type="text" name="tag_campanha" id="editTag" class="form-control"></div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" name="controla_estoque" value="1" id="controlaEstoqueBrinde">
+                    <label class="form-check-label" for="controlaEstoqueBrinde">Adicionar também ao estoque de brindes</label>
+                </div>
+                <div id="camposEstoqueBrinde" class="d-none">
+                    <p class="small text-muted">Informe a quantidade comprada e quanto será usado por venda. O valor da compra continua registrado como despesa.</p>
+                    <div class="row">
+                        <div class="col-sm-6 mb-3">
+                            <label class="form-label" for="quantidadeCompra">Quantidade comprada</label>
+                            <input id="quantidadeCompra" type="number" name="quantidade_compra" class="form-control" min="0.001" max="1000000000" step="any" disabled>
+                        </div>
+                        <div class="col-sm-6 mb-3">
+                            <label class="form-label" for="unidadeItem">Unidade</label>
+                            <select id="unidadeItem" name="unidade_item" class="form-select" disabled>
+                                <option value="ml">ml</option><option value="g">g</option><option value="unidade">unidade(s)</option>
+                            </select>
+                        </div>
+                        <div class="col-12 mb-2">
+                            <label class="form-label" for="consumoPorVenda">Quantidade usada por venda</label>
+                            <input id="consumoPorVenda" type="number" name="consumo_por_venda" class="form-control" min="0" max="1000000000" step="any" placeholder="0" disabled>
+                            <div class="form-text">Exemplo: 5 ml de limpa-pratas ou 1 pote. Use 0 para não baixar automaticamente.</div>
+                            <div class="form-text">Ao repor um item existente, deixe em branco para manter o consumo configurado.</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="modal-footer border-0"><button type="submit" class="btn btn-dark w-100 py-2">Salvar Alterações</button></div>
-        </form>
-    </div>
-</div>
-
-<!-- MODAL NOVO LOTE -->
-<div class="modal fade" id="modalColecao" tabindex="-1">
-    <div class="modal-dialog">
-        <form action="/colecao/add" method="POST" class="modal-content p-3">
-            <div class="modal-header border-0"><h5 class="modal-title fw-bold">Novo Lote</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body">
-                <div class="mb-3"><label class="form-label">Nome do Lote</label><input type="text" name="nome" class="form-control" required></div>
-                <div class="row g-3 mb-3"><div class="col-6"><label class="form-label">Qtd Peças</label><input type="number" name="qtd_pecas" class="form-control" required></div><div class="col-6"><label class="form-label">Frete (R$)</label><input type="number" step="0.01" name="valor_frete" class="form-control" value="0"></div></div>
-                <div class="mb-0"><label class="form-label">Mimos (R$)</label><input type="number" step="0.01" name="valor_mimos" class="form-control" value="0"></div>
-            </div>
-            <div class="modal-footer border-0"><button type="submit" class="btn btn-dark w-100">Registrar Lote</button></div>
-        </form>
-    </div>
-</div>
-
-<!-- MODAL NOVA JOIA -->
-<div class="modal fade" id="modalProduto" tabindex="-1">
-    <div class="modal-dialog">
-        <form action="/produto/add" method="POST" class="modal-content p-3">
-            <div class="modal-header border-0"><h5 class="modal-title fw-bold">Nova Joia</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body">
-                <div class="mb-3"><label class="form-label">Nome</label><input type="text" name="nome" class="form-control" required></div>
-                <div class="mb-3"><label class="form-label">URL da Foto</label><input type="url" name="foto_url" class="form-control" placeholder="Link da imagem"></div>
-                <div class="mb-3"><label class="form-label">Lote</label><select name="colecao_id" class="form-select">{% for c in colecoes %}<option value="{{ c.id }}">{{ c.nome }}</option>{% endfor %}</select></div>
-                <div class="row g-3"><div class="col-6"><label class="form-label">Custo Base</label><input type="number" step="0.01" name="custo_base" class="form-control" required></div><div class="col-6"><label class="form-label">Markup</label><input type="number" step="0.1" name="markup" class="form-control" value="2.5"></div></div>
-            </div>
-            <div class="modal-footer border-0"><button type="submit" class="btn btn-dark w-100">Salvar no Estoque</button></div>
-        </form>
-    </div>
-</div>
-
-<!-- MODAL META -->
-<div class="modal fade" id="modalMeta" tabindex="-1">
-    <div class="modal-dialog">
-        <form action="/meta/update" method="POST" class="modal-content p-3">
-            <div class="modal-header border-0"><h5 class="modal-title fw-bold">Definir Meta</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body">
-                <div class="mb-3"><label class="form-label">Valor da Meta (Faturamento)</label><input type="number" name="valor_meta" class="form-control" value="{{ meta_valor }}" required></div>
-            </div>
-            <div class="modal-footer border-0"><button type="submit" class="btn btn-dark w-100">Atualizar</button></div>
+            <div class="modal-footer"><button type="submit" class="btn btn-luxury w-100">REGISTRAR DESPESA</button></div>
         </form>
     </div>
 </div>
@@ -253,32 +530,306 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     let precoBaseVenda = 0;
-    function abrirModalVenda(id, nome, precoIdeal) {
-        precoBaseVenda = precoIdeal;
-        document.getElementById('vendaNomeJoia').innerText = nome;
-        document.getElementById('formVenda').action = '/produto/vender/' + id;
-        document.getElementById('vendaDesconto').value = 0;
-        calcularTotalVenda();
-        new bootstrap.Modal(document.getElementById('modalVenda')).show();
-    }
+
     function calcularTotalVenda() {
-        const desconto = document.getElementById('vendaDesconto').value || 0;
-        const total = precoBaseVenda * (1 - (desconto / 100));
-        document.getElementById('vendaValorFinal').innerText = 'R$ ' + total.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+        const desc = Number(document.getElementById('descVenda').value) || 0;
+        let total = precoBaseVenda * (1 - (desc/100));
+        document.getElementById('totalVenda').innerText = total.toLocaleString('pt-BR', {minimumFractionDigits: 2});
     }
-    function abrirModalEdicao(id, nome, markup, cliente, pagamento, desconto, foto, origem, tag) {
-        document.getElementById('formEdicao').action = '/produto/editar/' + id;
-        document.getElementById('editNome').value = nome;
-        document.getElementById('editFoto').value = foto;
-        document.getElementById('editMarkup').value = markup;
-        document.getElementById('editCliente').value = cliente;
-        document.getElementById('editPagamento').value = pagamento;
-        document.getElementById('editDesconto').value = desconto;
-        document.getElementById('editOrigem').value = origem || 'Instagram';
-        document.getElementById('editTag').value = tag || '';
-        new bootstrap.Modal(document.getElementById('modalEdicao')).show();
+
+    document.querySelectorAll('.js-vender').forEach((button) => {
+        button.addEventListener('click', () => {
+            const id = button.dataset.id;
+            const nome = button.dataset.nome;
+            precoBaseVenda = Number(button.dataset.preco);
+            document.getElementById('formVenda').action = `/produto/vender/${id}`;
+            document.getElementById('vendaNomeJoia').textContent = nome;
+            document.getElementById('descVenda').value = '0';
+            document.getElementById('totalVenda').textContent =
+                precoBaseVenda.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('modalVenda')).show();
+        });
+    });
+
+    document.getElementById('controlaEstoqueBrinde').addEventListener('change', (event) => {
+        const enabled = event.currentTarget.checked;
+        const fields = document.getElementById('camposEstoqueBrinde');
+        fields.classList.toggle('d-none', !enabled);
+        fields.querySelectorAll('input, select').forEach((input) => {
+            input.disabled = !enabled;
+        });
+        document.getElementById('quantidadeCompra').required = enabled;
+    });
+
+    function atualizarPrecoIdeal() {
+        const select = document.querySelector('[name="colecao_id"]');
+        const custo = Number(document.getElementById('produtoCusto').value) || 0;
+        const markup = Number(document.getElementById('produtoMarkup').value) || 0;
+        const manual = Number(document.getElementById('produtoPrecoManual').value) || 0;
+        const rateio = Number(select.selectedOptions[0]?.dataset.rateio) || 0;
+        const preco = manual > 0 ? manual : (custo + rateio) * markup;
+        document.getElementById('precoIdealPreview').textContent =
+            preco > 0 ? `R$ ${preco.toLocaleString('pt-BR', {minimumFractionDigits: 2})}` : '—';
     }
-    function abrirModalMeta() { new bootstrap.Modal(document.getElementById('modalMeta')).show(); }
+
+    function atualizarPrecosItens() {
+        const markup = Number(document.getElementById('produtoMarkup').value) || 0;
+        const collection = document.querySelector('[name="colecao_id"]');
+        const rateio = Number(collection.selectedOptions[0]?.dataset.rateio) || 0;
+        document.querySelectorAll('#itensExtraidos tr').forEach((row) => {
+            const cost = Number(row.querySelector('[name="produto_custo[]"]').value) || 0;
+            const manual = Number(row.querySelector('[name="produto_manual[]"]').value) || 0;
+            const price = manual > 0 ? manual : (cost + rateio) * markup;
+            row.querySelector('.preco-ideal-item').textContent = price > 0
+                ? `R$ ${price.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`
+                : '—';
+        });
+    }
+
+    function mostrarItensExtraidos(items) {
+        const body = document.getElementById('itensExtraidos');
+        body.replaceChildren();
+        const categories = ['Brincos', 'Anéis', 'Colares', 'Pulseiras', 'Piercings', 'Outros'];
+        items.forEach((item, index) => {
+            const row = document.createElement('tr');
+            if (item.revisar) row.classList.add('table-warning');
+            const checkCell = document.createElement('td');
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.className = 'form-check-input';
+            checkbox.name = 'produto_incluir[]';
+            checkbox.value = String(index);
+            checkbox.checked = Boolean(item.incluido) && item.custo_base !== null;
+            checkbox.setAttribute('aria-label', `Incluir ${item.nome || `item ${index + 1}`}`);
+            checkCell.append(checkbox);
+
+            const nameCell = document.createElement('td');
+            const name = document.createElement('input');
+            name.className = 'form-control form-control-sm';
+            name.name = 'produto_nome[]';
+            name.maxLength = 100;
+            name.required = false;
+            name.value = item.nome || '';
+            nameCell.append(name);
+            if (item.revisar) {
+                const warning = document.createElement('div');
+                warning.className = 'small text-warning-emphasis';
+                warning.textContent = 'Confira este item';
+                nameCell.append(warning);
+            }
+
+            const categoryCell = document.createElement('td');
+            const category = document.createElement('select');
+            category.className = 'form-select form-select-sm';
+            category.name = 'produto_categoria[]';
+            categories.forEach((value) => {
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = value;
+                option.selected = value === item.categoria;
+                category.append(option);
+            });
+            categoryCell.append(category);
+
+            const costCell = document.createElement('td');
+            const cost = document.createElement('input');
+            cost.className = 'form-control form-control-sm';
+            cost.type = 'number';
+            cost.name = 'produto_custo[]';
+            cost.min = '0';
+            cost.step = '0.01';
+            cost.required = false;
+            cost.value = item.custo_base ?? '';
+            costCell.append(cost);
+
+            const priceCell = document.createElement('td');
+            const manual = document.createElement('input');
+            manual.type = 'hidden';
+            manual.name = 'produto_manual[]';
+            manual.value = '';
+            const price = document.createElement('span');
+            price.className = 'preco-ideal-item';
+            priceCell.append(price, manual);
+            const photoCell = document.createElement('td');
+            const photo = document.createElement('input');
+            photo.type = 'file';
+            photo.className = 'form-control form-control-sm';
+            photo.name = 'produto_foto[]';
+            photo.accept = '.jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp';
+            photo.setAttribute('aria-label', `Foto de ${item.nome || `item ${index + 1}`}`);
+            photoCell.append(photo);
+            row.append(checkCell, nameCell, categoryCell, costCell, photoCell, priceCell);
+            body.append(row);
+        });
+        document.getElementById('produtoCamposUnicos').classList.add('d-none');
+        document.getElementById('custoProdutoUnico').classList.add('d-none');
+        ['produtoNome', 'produtoCategoria', 'produtoCusto'].forEach((id) => {
+            document.getElementById(id).disabled = true;
+        });
+        document.getElementById('listaItensExtraidos').classList.remove('d-none');
+        document.getElementById('formProduto').action = '{{ url_for("add_produtos_lote") }}';
+        document.getElementById('fotoProduto').disabled = true;
+        document.getElementById('produtoFotoUrl').disabled = true;
+        document.getElementById('fotoUrlUnica').classList.add('d-none');
+        document.getElementById('cadastrarProduto').textContent = 'CADASTRAR JOIAS SELECIONADAS';
+        atualizarPrecosItens();
+    }
+
+    ['produtoCusto', 'produtoMarkup', 'produtoPrecoManual'].forEach((id) => {
+        document.getElementById(id).addEventListener('input', atualizarPrecoIdeal);
+    });
+    document.getElementById('produtoMarkup').addEventListener('input', atualizarPrecosItens);
+    document.querySelector('[name="colecao_id"]').addEventListener('change', () => {
+        atualizarPrecoIdeal();
+        atualizarPrecosItens();
+    });
+
+    document.getElementById('extrairAnexo').addEventListener('click', async (event) => {
+        const fileInput = document.getElementById('anexoProduto');
+        const status = document.getElementById('statusExtracao');
+        if (!fileInput.files.length) {
+            status.textContent = 'Escolha uma foto ou PDF primeiro.';
+            status.className = 'small mt-2 text-danger';
+            return;
+        }
+        const button = event.currentTarget;
+        const submitButton = document.getElementById('cadastrarProduto');
+        button.disabled = true;
+        submitButton.disabled = true;
+        status.textContent = 'Lendo o arquivo localmente…';
+        status.className = 'small mt-2 text-muted';
+        const formData = new FormData();
+        formData.append('anexo', fileInput.files[0]);
+        formData.append('csrf_token', document.querySelector('#formProduto [name="csrf_token"]').value);
+        try {
+            const response = await fetch('{{ url_for("extrair_anexo") }}', {method: 'POST', body: formData});
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || 'Não foi possível ler o arquivo.');
+            if (data.items?.length) {
+                mostrarItensExtraidos(data.items);
+                const included = data.items.filter((item) => item.incluido && item.custo_base !== null).length;
+                const excluded = data.items.length - included;
+                status.textContent = `${data.items.length} itens encontrados; ${included} selecionados para cadastro${excluded ? ` e ${excluded} desmarcados para revisão` : ''}. Revise nomes e custos antes de continuar.`;
+                status.className = 'small mt-2 text-success';
+                return;
+            }
+            document.getElementById('listaItensExtraidos').classList.add('d-none');
+            document.getElementById('produtoCamposUnicos').classList.remove('d-none');
+            document.getElementById('custoProdutoUnico').classList.remove('d-none');
+            ['produtoNome', 'produtoCategoria', 'produtoCusto'].forEach((id) => {
+                document.getElementById(id).disabled = false;
+            });
+            document.getElementById('formProduto').action = '{{ url_for("add_produto") }}';
+            document.getElementById('fotoProduto').disabled = false;
+            document.getElementById('produtoFotoUrl').disabled = false;
+            document.getElementById('fotoUrlUnica').classList.remove('d-none');
+            document.getElementById('cadastrarProduto').textContent = 'CADASTRAR';
+            if (data.nome) document.getElementById('produtoNome').value = data.nome;
+            if (data.custo_encontrado) {
+                document.getElementById('produtoCusto').value = data.custo_base;
+            } else {
+                document.getElementById('produtoCusto').value = '';
+            }
+            atualizarPrecoIdeal();
+            const missing = [];
+            if (!data.nome_encontrado) missing.push('nome');
+            if (!data.custo_encontrado) missing.push('custo');
+            status.textContent = missing.length
+                ? `Encontrei ${data.nome_encontrado ? 'o nome' : 'o custo'}, mas não identifiquei ${missing.join(' e ')}. Preencha o campo manualmente e confira o restante.`
+                : 'Nome e custo sugeridos. Confira os dados antes de cadastrar.';
+            status.className = missing.length
+                ? 'small mt-2 text-warning-emphasis'
+                : 'small mt-2 text-success';
+        } catch (error) {
+            status.textContent = error.message || 'Falha ao extrair informações.';
+            status.className = 'small mt-2 text-danger';
+        } finally {
+            button.disabled = false;
+            submitButton.disabled = false;
+        }
+    });
+    document.getElementById('anexoProduto').addEventListener('change', () => {
+        if (document.getElementById('anexoProduto').files.length) {
+            document.getElementById('extrairAnexo').click();
+        }
+    });
+
+    document.querySelectorAll('.js-editar-produto').forEach((button) => {
+        button.addEventListener('click', () => {
+            const form = document.getElementById('formEditarProduto');
+            form.action = `/produto/editar/${button.dataset.id}`;
+            document.getElementById('editarNome').value = button.dataset.nome;
+            document.getElementById('editarCategoria').value = button.dataset.categoria;
+            document.getElementById('editarCusto').value = button.dataset.custo;
+            document.getElementById('editarMarkup').value = button.dataset.markup;
+            document.getElementById('editarPrecoManual').value = button.dataset.manual;
+            document.getElementById('editarFoto').value = '';
+            form.querySelector('[name="remover_foto"]').checked = false;
+            const photoStatus = document.getElementById('fotoAtualProduto');
+            const photoPreview = document.getElementById('editarFotoPreview');
+            photoPreview.classList.toggle('d-none', !button.dataset.foto);
+            photoPreview.src = button.dataset.foto || '';
+            photoStatus.textContent = button.dataset.foto
+                ? 'Selecione uma nova imagem para substituir a atual.'
+                : 'Nenhuma foto cadastrada.';
+        });
+    });
+
+    document.getElementById('modalProduto').addEventListener('hidden.bs.modal', () => {
+        const form = document.getElementById('formProduto');
+        form.reset();
+        document.getElementById('itensExtraidos').replaceChildren();
+        document.getElementById('listaItensExtraidos').classList.add('d-none');
+        document.getElementById('produtoCamposUnicos').classList.remove('d-none');
+        document.getElementById('custoProdutoUnico').classList.remove('d-none');
+        ['produtoNome', 'produtoCategoria', 'produtoCusto'].forEach((id) => {
+            document.getElementById(id).disabled = false;
+        });
+        document.getElementById('fotoProduto').disabled = false;
+        document.getElementById('produtoFotoUrl').disabled = false;
+        document.getElementById('fotoUrlUnica').classList.remove('d-none');
+        form.action = '{{ url_for("add_produto") }}';
+        document.getElementById('cadastrarProduto').textContent = 'CADASTRAR';
+        document.getElementById('statusExtracao').textContent = '';
+        document.getElementById('precoIdealPreview').textContent = '—';
+    });
+
+    async function verMetricasTotais(button) {
+        button.disabled = true;
+        button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> CARREGANDO...';
+
+        try {
+            const response = await fetch('{{ url_for("api_metricas_total") }}');
+            if (!response.ok) throw new Error('Não foi possível carregar as métricas.');
+            const data = await response.json();
+
+            document.getElementById('valFaturamento').innerText = 'R$ ' + data.faturamento.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+            document.getElementById('valLucro').innerText = 'R$ ' + data.lucro_liquido.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+            document.getElementById('valVendas').innerText = data.total_vendas;
+            document.getElementById('valTicket').innerText = 'R$ ' + data.ticket_medio.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+
+            document.querySelector('h1').innerText = 'Performance Consolidada (Total)';
+            document.querySelector('.dashboard-subtitle').innerText = 'Dados Históricos de Todos os Lotes e Períodos';
+
+            button.innerHTML = '<i class="fas fa-sync me-2"></i> VOLTAR PARA ATUAL';
+            button.dataset.mode = 'total';
+            button.disabled = false;
+            button.classList.replace('btn-total', 'btn-dark');
+        } catch (error) {
+            button.disabled = false;
+            button.innerHTML = '<i class="fas fa-globe me-2"></i> VER MÉTRICA TOTAL (HISTÓRICO)';
+            window.alert(error.message);
+        }
+    }
+    document.getElementById('metricasTotais').addEventListener('click', (event) => {
+        const button = event.currentTarget;
+        if (button.dataset.mode === 'total') {
+            window.location.reload();
+            return;
+        }
+        verMetricasTotais(button);
+    });
 </script>
+
 </body>
 </html>

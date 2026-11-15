@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autentke | Digital Lookbook</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #D4AF37; --bg: #FFFFFF; --text: #1A1A1A; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); padding: 0; margin: 0; }
+        h1, h2, .luxury-font { font-family: 'Cormorant Garamond', serif; }
+
+        .hero-section { height: 40vh; display: flex; align-items: center; justify-content: center; text-align: center; border-bottom: 1px solid #F0F0F0; margin-bottom: 4rem; }
+        .brand-title { font-size: 4rem; letter-spacing: 12px; font-weight: 700; margin-bottom: 0.5rem; }
+        .sub-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 4px; color: #999; }
+
+        .joia-item { margin-bottom: 6rem; transition: 0.5s; }
+        .img-container { position: relative; overflow: hidden; background: #FAFAFA; aspect-ratio: 1 / 1; }
+        .joia-img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s; }
+        .joia-item:hover .joia-img { transform: scale(1.03); }
+
+        .joia-details { padding-top: 1.5rem; text-align: center; }
+        .joia-category { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); margin-bottom: 0.5rem; font-weight: 600; }
+        .joia-name { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 500; margin-bottom: 1rem; }
+        .joia-price { font-size: 1.2rem; font-weight: 400; letter-spacing: 1px; margin-bottom: 1.5rem; }
+
+        .conditions-box { border-top: 1px solid #EEE; padding-top: 1.5rem; display: flex; justify-content: center; gap: 3rem; }
+        .condition-item { text-align: center; }
+        .condition-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; color: #999; margin-bottom: 0.3rem; }
+        .condition-value { font-size: 0.85rem; font-weight: 600; }
+
+        .btn-whatsapp { background: var(--text); color: white; border-radius: 0; padding: 12px 30px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; text-decoration: none; display: inline-block; margin-top: 2rem; transition: 0.3s; }
+        .btn-whatsapp:hover { background: var(--gold); color: white; }
+
+        @media print {
+            .btn-print { display: none !important; }
+            .joia-item { break-inside: avoid; page-break-after: always; height: 90vh; display: flex; flex-direction: column; justify-content: center; }
+            .hero-section { height: 20vh; }
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+
+        .btn-floating-print { position: fixed; bottom: 30px; right: 30px; z-index: 1000; border-radius: 50px; padding: 15px 25px; background: #000; color: #fff; border: none; font-size: 0.8rem; letter-spacing: 1px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: 0.3s; }
+        .btn-floating-print:hover { background: var(--gold); transform: scale(1.05); }
+    </style>
+</head>
+<body>
+
+<button onclick="window.print()" class="btn-floating-print btn-print">SALVAR CATÁLOGO PDF</button>
+
+<div class="hero-section">
+    <div>
+        <div class="brand-title">AUTENTKE</div>
+        <div class="sub-title">Digital Lookbook • {{ data }}</div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        {% for p in estoque %}
+        <div class="col-lg-8 joia-item">
+            <div class="img-container">
+                <img src="{{ p.foto_url if p.foto_url else url_for('static', filename='logo_autentke.png') }}" class="joia-img" alt="Foto de {{ p.nome }}" loading="lazy">
+            </div>
+            <div class="joia-details">
+                <div class="joia-category">{{ p.categoria }}</div>
+                <div class="joia-name">{{ p.nome }}</div>
+                <div class="joia-price">R$ {{ "%.2f"|format(p.preco_ideal) }}</div>
+
+                <div class="conditions-box">
+                    <div class="condition-item">
+                        <div class="condition-label">À Vista (Pix)</div>
+                        <div class="condition-value" style="color: #10b981;">R$ {{ "%.2f"|format(p.preco_ideal * 0.9) }}</div>
+                    </div>
+                    <div class="condition-item">
+                        <div class="condition-label">Parcelado</div>
+                        <div class="condition-value">3x de R$ {{ "%.2f"|format(p.preco_ideal / 3) }}</div>
+                    </div>
+                </div>
+
+                {% if loja.whatsapp %}
+                <a href="https://wa.me/{{ loja.whatsapp }}?text={{ ('Olá! Gostaria de saber mais sobre a joia: ' ~ p.nome)|urlencode }}" target="_blank" rel="noopener" class="btn-whatsapp btn-print">SOLICITAR DISPONIBILIDADE</a>
+                {% else %}
+                <a href="https://instagram.com/{{ loja.instagram }}" target="_blank" rel="noopener" class="btn-whatsapp btn-print">FALE CONOSCO NO INSTAGRAM</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <footer class="py-5 mt-5 text-center border-top">
+        <p class="sub-title" style="color: #333;">@{{ loja.instagram }}</p>
+        <p class="small text-muted mt-2">Autentke Joias © 2024 • Todos os direitos reservados</p>
+    </footer>
+</div>
+
+</body>
+</html>
