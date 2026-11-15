@@ -66,6 +66,7 @@ class ApplicationTests(unittest.TestCase):
     def test_dashboard_and_reports_require_login_but_catalog_is_public(self):
         self.assertEqual(self.client.get("/").status_code, 302)
         self.assertEqual(self.client.get("/relatorio").status_code, 302)
+        self.assertEqual(self.client.get("/vendas").status_code, 302)
         self.assertEqual(self.client.get("/catalogo").status_code, 200)
         self.assertEqual(self.client.get("/health").get_json(), {"status": "ok"})
         self.login()
@@ -230,6 +231,61 @@ class ApplicationTests(unittest.TestCase):
             self.assertEqual(cleaner_item.quantidade_estoque, 4)
             self.assertEqual(pot_item.quantidade_estoque, 1)
             self.assertEqual(application.ConsumoBrinde.query.count(), 1)
+
+    def test_sales_page_lists_sales_and_excluding_sale_restores_stock(self):
+        product_id = self.create_product()
+        self.login()
+        self.client.post(
+            "/despesa/add",
+            data={
+                "descricao": "Pote", "valor": "20", "categoria": "Embalagem",
+                "controla_estoque": "1", "quantidade_compra": "10",
+                "unidade_item": "unidade", "consumo_por_venda": "1",
+            },
+        )
+        self.client.post(
+            f"/produto/vender/{product_id}",
+            data={
+                "cliente_nome": "Cliente teste", "desconto_manual": "10",
+                "num_parcelas": "2", "forma_pagamento": "Cartão",
+                "origem_venda": "Instagram",
+            },
+        )
+        sales_page = self.client.get("/vendas")
+        self.assertEqual(sales_page.status_code, 200)
+        self.assertIn("Vendas realizadas", sales_page.get_data(as_text=True))
+        self.assertIn("Cliente teste", sales_page.get_data(as_text=True))
+        with application.app.app_context():
+            sale = application.db.get_or_404(application.Produto, product_id)
+            self.assertEqual(sale.preco_venda, 198)
+            item = application.ItemBrinde.query.filter_by(nome="Pote").one()
+            self.assertEqual(item.quantidade_estoque, 9)
+
+        deleted = self.client.post(
+            f"/produto/excluir-venda/{product_id}", follow_redirects=True
+        )
+        self.assertIn("Venda excluída", deleted.get_data(as_text=True))
+        self.assertIn("Ainda não há vendas registradas", deleted.get_data(as_text=True))
+        with application.app.app_context():
+            product = application.db.get_or_404(application.Produto, product_id)
+            item = application.ItemBrinde.query.filter_by(nome="Pote").one()
+            self.assertEqual(product.vendido, "NÃO")
+            self.assertIsNone(product.data_venda)
+            self.assertIsNone(product.preco_venda)
+            self.assertIsNone(product.cliente_nome)
+            self.assertEqual(item.quantidade_estoque, 10)
+            self.assertEqual(application.ConsumoBrinde.query.count(), 0)
+
+    def test_cannot_exclude_sale_for_unsold_product(self):
+        product_id = self.create_product()
+        self.login()
+        response = self.client.post(
+            f"/produto/excluir-venda/{product_id}", follow_redirects=True
+        )
+        self.assertIn(
+            "não possui uma venda para excluir",
+            response.get_data(as_text=True).lower(),
+        )
 
     def test_monthly_metrics_exclude_archived_collection_sales(self):
         product_id = self.create_product(archived=True)

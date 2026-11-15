@@ -70,6 +70,7 @@
         <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#modalColecao"><i class="fas fa-layer-group"></i> Gerenciar Lotes</a>
         <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#modalProduto"><i class="fas fa-gem"></i> Adicionar Joia</a>
         <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#modalDespesa"><i class="fas fa-receipt"></i> Despesas</a>
+        <a class="nav-link" href="{{ url_for('vendas_realizadas') }}"><i class="fas fa-shopping-bag"></i> Vendas realizadas</a>
         <a class="nav-link" href="{{ url_for('relatorio') }}"><i class="fas fa-file-invoice"></i> Relatórios</a>
         <a class="nav-link" href="{{ url_for('catalogo') }}" target="_blank" rel="noopener" style="color: var(--gold);"><i class="fas fa-book-open"></i> Lookbook Digital</a>
         <form action="{{ url_for('logout') }}" method="post" class="mt-3">

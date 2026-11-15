@@ -75,6 +75,12 @@ venda é registrada, o item sem saldo não é descontado e o painel avisa. Para
 repor um item, use o mesmo nome e unidade; deixe o campo de consumo em branco
 para manter a configuração anterior.
 
+## Vendas realizadas
+
+A opção **Vendas realizadas** no painel lista o histórico completo. **Excluir
+venda** cancela o registro, devolve a joia ao estoque e repõe os brindes
+associados à venda; essa ação também remove os dados da venda dos relatórios.
+
 ## Testes
 
 ```bash

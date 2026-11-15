@@ -1257,6 +1257,58 @@ def relatorio():
     )
 
 
+@app.route("/vendas")
+@login_required
+def vendas_realizadas():
+    vendas = Produto.query.filter_by(vendido="SIM").options(
+        joinedload(Produto.colecao)
+    ).order_by(Produto.data_venda.desc(), Produto.id.desc()).all()
+    total_vendido = sum(venda.preco_venda or 0 for venda in vendas)
+    return render_template(
+        "vendas.html", vendas=vendas, total_vendido=total_vendido,
+    )
+
+
+@app.route("/produto/excluir-venda/<int:id>", methods=["POST"])
+@login_required
+def excluir_venda(id):
+    produto = db.get_or_404(Produto, id)
+    try:
+        if produto.vendido != "SIM":
+            raise ValueError("Esta joia não possui uma venda para excluir.")
+
+        consumos = ConsumoBrinde.query.filter_by(produto_id=produto.id).all()
+        for consumo in consumos:
+            item = db.session.get(ItemBrinde, consumo.item_id)
+            if item:
+                item.quantidade_estoque += consumo.quantidade
+            db.session.delete(consumo)
+
+        produto.vendido = "NÃO"
+        produto.cliente_nome = None
+        produto.cliente_telefone = None
+        produto.forma_pagamento = None
+        produto.num_parcelas = 1
+        produto.origem_venda = None
+        produto.tag_campanha = None
+        produto.data_venda = None
+        produto.desconto_aplicado = 0
+        produto.preco_venda = None
+        db.session.commit()
+        flash(
+            "Venda excluída; a joia voltou ao estoque e os brindes foram repostos.",
+            "success",
+        )
+    except ValueError as exc:
+        db.session.rollback()
+        flash(str(exc), "error")
+    except SQLAlchemyError:
+        db.session.rollback()
+        logger.exception("Falha ao excluir venda")
+        flash("Não foi possível excluir a venda. Tente novamente.", "error")
+    return redirect(url_for("vendas_realizadas"))
+
+
 @app.route("/catalogo")
 def catalogo():
     estoque = Produto.query.join(Colecao).filter(
